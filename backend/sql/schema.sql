@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS professorai;
 CREATE DATABASE IF NOT EXISTS professorai;
 
 USE professorai;
@@ -24,7 +25,7 @@ CREATE TABLE IF NOT EXISTS admins (
 );
 
 CREATE TABLE IF NOT EXISTS courses (
-                                       course_id VARCHAR(10) PRIMARY KEY,
+                                       course_id INT AUTO_INCREMENT PRIMARY KEY,
                                        course_code VARCHAR(20) NOT NULL,
                                        course_name VARCHAR(100) NOT NULL,
                                        professor_id VARCHAR(10),
@@ -32,11 +33,11 @@ CREATE TABLE IF NOT EXISTS courses (
 );
 
 CREATE TABLE IF NOT EXISTS course_material (
-                                               material_id VARCHAR(10) PRIMARY KEY,
+                                               material_id INT AUTO_INCREMENT PRIMARY KEY,
                                                URI VARCHAR(255) NOT NULL,
                                                file_name VARCHAR(100) NOT NULL,
                                                file_type VARCHAR(50) NOT NULL,
-                                               course_id VARCHAR(10),
+                                               course_id INT,
                                                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                                                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                                                FOREIGN KEY (course_id) REFERENCES courses(course_id)
@@ -45,7 +46,7 @@ CREATE TABLE IF NOT EXISTS course_material (
 
 CREATE TABLE IF NOT EXISTS enrollments (
                                            student_id VARCHAR(10),
-                                           course_id VARCHAR(10),
+                                           course_id INT ,
                                            PRIMARY KEY (student_id, course_id),
                                            FOREIGN KEY (student_id) REFERENCES students(student_id),
                                            FOREIGN KEY (course_id) REFERENCES courses(course_id)
