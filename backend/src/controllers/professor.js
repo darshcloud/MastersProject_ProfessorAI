@@ -39,11 +39,6 @@ async function getProfessorProfileDetails(req, res) {
         const Professor = require('../models/Professor')(sequelizeInstance);
         const Course = require('../models/Course')(sequelizeInstance);
 
-        // association among tables to retrieve only one course as
-        //one course is associated with each professor
-        Professor.hasOne(Course, { foreignKey: 'professor_id' });
-        Course.belongsTo(Professor, { foreignKey: 'professor_id' });
-
         // Fetch the professor by professorId including associated courses
         const professorId = req.params.professor_id;
         const professor = await Professor.findByPk(professorId, {
