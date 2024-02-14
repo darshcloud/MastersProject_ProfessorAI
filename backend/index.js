@@ -25,6 +25,9 @@ sequelize.authenticate()
         console.error('Unable to connect to the database:', err);
     });
 
+// Middleware to parse JSON bodies
+app.use(express.json());
+
 // Load routes
 const apiRoutes = require('./src/routes/api');
 

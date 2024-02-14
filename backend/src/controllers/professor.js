@@ -61,8 +61,60 @@ async function getProfessorProfileDetails(req, res) {
     }
 }
 
+//Controller Function to update profile information
+async function updateProfileInformation(req, res) {
+    try {
+        if (!sequelizeInstance) {
+            return res.status(500).json({ message: "Sequelize instance is not set." });
+        }
+
+        const Professor = require('../models/Professor')(sequelizeInstance);
+
+        const { professor_id } = req.params;
+
+        // Extract first_name and last_name from request body
+        const { first_name, last_name } = req.body;
+
+        // Check for the presence of required fields
+        if (!first_name || !last_name) {
+            return res.status(400).json({ message: 'First name and Last name are required' });
+        }
+
+        // Find the professor by professorId
+        const professor = await Professor.findByPk(professor_id);
+
+        // If professor does not exist, return an error
+        if (!professor) {
+            return res.status(404).json({ message: 'Profile Information not found to Update' });
+        }
+
+        // Update the professor's profile information
+        professor.first_name = first_name;
+        professor.last_name = last_name;
+
+        // Save the changes to the database
+        await professor.save();
+
+        // Send a success response once saved
+        res.json({ message: 'Profile Details updated and saved successfully' });
+    } catch (error) {
+        // If an error occurs, send an error response
+        res.status(500).json({ message: error.message });
+    }
+}
+
 module.exports = {
     setSequelize,
     getAllProfessors,
-    getProfessorProfileDetails
+    getProfessorProfileDetails,
+    updateProfileInformation
 };
+
+
+
+
+
+
+
+
+
