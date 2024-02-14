@@ -4,7 +4,7 @@ const professorCtrl = require('../controllers/professor');
 
 // Define routes
 router.get('/professor', professorCtrl.getAllProfessors);
-router.get('/professor/viewprofile/:professor_id', professorCtrl.getProfessorProfileDetails);
+router.get('/professor/profile/:professor_id', professorCtrl.getProfessorProfileDetails);
 
 module.exports = (sequelize) => {
     // Pass Sequelize instance to controller
