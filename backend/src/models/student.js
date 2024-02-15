@@ -27,7 +27,6 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING(20), 
             allowNull: true 
         }
-
     }, {
         timestamps: false // Disable timestamps
     });
