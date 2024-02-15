@@ -103,11 +103,45 @@ async function updateProfileInformation(req, res) {
     }
 }
 
+async function getEnrolledStudentDetails(req, res) {
+
+    const Course = require('../models/course')(sequelizeInstance);
+    const Enrollment=require('../models/enrollment')(sequelizeInstance);
+    const Student=require('../models/student')(sequelizeInstance);
+
+    try {
+        const students =  await Student.findAll({
+            include: [{
+                model: Course,
+                through: {
+                    model: Enrollment,
+                    where: { course_id: req.params.course_id }
+                },
+                required: true
+            }]
+        });
+        console.log(students)
+
+        const enrolledStudents =  students.map(student => ({
+            student_id: student.student_id,
+            first_name: student.first_name,
+            last_name: student.last_name,
+            email: student.email
+        }));
+
+        res.json({ enrolledStudents });
+    } catch (error) {
+        console.error('Error retrieving enrolled students:', error);
+        res.status(500).json({ message: error.message});
+    }
+}
+
 module.exports = {
     setSequelize,
     getAllProfessors,
     getProfessorProfileDetails,
-    updateProfileInformation
+    updateProfileInformation,
+    getEnrolledStudentDetails
 };
 
 
