@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS courses (
                                        FOREIGN KEY (professor_id) REFERENCES professors(professor_id)
 );
 
-CREATE TABLE IF NOT EXISTS course_material (
+CREATE TABLE IF NOT EXISTS course_materials (
                                                material_id INT AUTO_INCREMENT PRIMARY KEY,
                                                URI VARCHAR(255) NOT NULL,
                                                file_name VARCHAR(100) NOT NULL,
