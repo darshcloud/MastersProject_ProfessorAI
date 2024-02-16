@@ -104,7 +104,6 @@ async function updateProfileInformation(req, res) {
 }
 
 async function getEnrolledStudentDetails(req, res) {
-
     const Course = require('../models/course')(sequelizeInstance);
     const Enrollment=require('../models/enrollment')(sequelizeInstance);
     const Student=require('../models/student')(sequelizeInstance);
@@ -142,8 +141,7 @@ module.exports = {
     getProfessorProfileDetails,
     updateProfileInformation,
     getEnrolledStudentDetails
-};
-
+}
 
 
 
