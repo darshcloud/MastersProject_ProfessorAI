@@ -45,9 +45,10 @@ CREATE TABLE IF NOT EXISTS course_material (
 
 
 CREATE TABLE IF NOT EXISTS enrollments (
-                                           student_id VARCHAR(10),
-                                           course_id INT ,
-                                           PRIMARY KEY (student_id, course_id),
-                                           FOREIGN KEY (student_id) REFERENCES students(student_id),
-                                           FOREIGN KEY (course_id) REFERENCES courses(course_id)
+                                            enrollment_id INT AUTO_INCREMENT PRIMARY KEY,
+                                            student_id VARCHAR(10) NOT NULL,
+                                            course_id INT NOT NULL,
+                                            FOREIGN KEY (student_id) REFERENCES students(student_id),
+                                            FOREIGN KEY (course_id) REFERENCES courses(course_id),
+                                            UNIQUE(student_id, course_id)
 );
