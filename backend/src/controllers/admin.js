@@ -150,10 +150,39 @@ async function deleteStudent(req, res) {
 
 }
 
+async function deleteProfessor(req, res) {
+    try {
+  
+        if (!sequelizeInstance) {
+            return res.status(500).json({ message: "Sequelize instance is not set." });
+        }
+
+   
+        const { professor_id } = req.params;
+
+        const Professor = require('../models/Professor')(sequelizeInstance);
+        const professor = await Professor.findByPk(professor_id);
+        console.log(professor)
+
+        if (!professor) {
+            return res.status(404).json({ message: "Profesor not found." });
+        }
+        await professor.destroy();
+
+        res.json({ message: "Profesor deleted successfully." });
+    } catch (error) {
+
+        res.status(500).json({ message: error.message });
+    }
+
+
+}
+
 module.exports = {
     setSequelize,
     registerUser,
     enrollStudent,
     updateStudent,
-    deleteStudent
+    deleteStudent,
+    deleteProfessor
 };

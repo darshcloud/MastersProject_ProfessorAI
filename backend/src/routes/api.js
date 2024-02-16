@@ -12,6 +12,7 @@ router.post('/admin/register', adminCtrl.registerUser);
 router.post('/admin/student/enroll', adminCtrl.enrollStudent);
 router.put('/admin/student/:student_id', adminCtrl.updateStudent);
 router.delete('/admin/student/:student_id', adminCtrl.deleteStudent);
+router.delete('/admin/professor/:professor_id', adminCtrl.deleteProfessor);
 
 module.exports = (sequelize) => {
     // Pass Sequelize instance to controller
