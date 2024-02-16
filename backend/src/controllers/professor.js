@@ -72,13 +72,8 @@ async function updateProfileInformation(req, res) {
 
         const { professor_id } = req.params;
 
-        // Extract first_name and last_name from request body
-        const { first_name, last_name } = req.body;
-
-        // Check for the presence of required fields
-        if (!first_name || !last_name) {
-            return res.status(400).json({ message: 'First name and Last name are required' });
-        }
+        // Extract Bio and Phone Number from request body
+        const { bio, phone_number } = req.body;
 
         // Find the professor by professorId
         const professor = await Professor.findByPk(professor_id);
@@ -89,8 +84,8 @@ async function updateProfileInformation(req, res) {
         }
 
         // Update the professor's profile information
-        professor.first_name = first_name;
-        professor.last_name = last_name;
+        professor.bio = bio;
+        professor.phone_number = phone_number;
 
         // Save the changes to the database
         await professor.save();
