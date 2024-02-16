@@ -18,7 +18,18 @@ module.exports = (sequelize) => {
         email: {
             type: DataTypes.STRING(100),
             allowNull: false
-        }
+        },
+
+    }, {
+        timestamps: false // Disable timestamps
+    });
+
+    const Course = require("./course")(sequelize);
+    const Enrollment = require("./enrollment")(sequelize);
+    Student.belongsToMany(Course, {
+        through: Enrollment,
+        foreignKey: 'student_id',
+        otherKey: 'course_id',
     });
 
     return Student;

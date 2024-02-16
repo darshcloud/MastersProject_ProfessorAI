@@ -1,9 +1,14 @@
 // models/Course.js
 const { DataTypes } = require('sequelize');
-const Professor = require('./Professor');
 
 module.exports = (sequelize) => {
     const Course = sequelize.define('Course', {
+        course_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true
+        },
         course_code: {
             type: DataTypes.STRING(20),
             allowNull: false
@@ -24,7 +29,11 @@ module.exports = (sequelize) => {
         timestamps: false // Disable timestamps if you're handling them manually
     });
 
-    Course.belongsTo(Professor, { foreignKey: 'professor_id' });
+    const Enrollment = require("./enrollment")(sequelize);
+    Course.hasMany(Enrollment, {
+        foreignKey: 'course_id',
+        onDelete: 'CASCADE', // optional, if you want cascading deletes
+    });
 
     return Course;
 };
