@@ -19,6 +19,14 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING(100),
             allowNull: false
         },
+        bio: {
+            type: DataTypes.STRING(255), 
+            allowNull: true 
+        },
+        phone_number: {
+            type: DataTypes.STRING(20), 
+            allowNull: true 
+        }
 
     }, {
         timestamps: false // Disable timestamps

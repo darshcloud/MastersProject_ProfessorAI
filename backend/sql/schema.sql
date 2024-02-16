@@ -7,21 +7,29 @@ CREATE TABLE IF NOT EXISTS students (
                                         student_id VARCHAR(10) PRIMARY KEY,
                                         first_name VARCHAR(50) NOT NULL,
                                         last_name VARCHAR(50) NOT NULL,
-                                        email VARCHAR(100) NOT NULL
+                                        email VARCHAR(100) NOT NULL,
+                                        bio VARCHAR(255),
+                                        phone_number VARCHAR(20)
+
 );
 
 CREATE TABLE IF NOT EXISTS professors (
                                           professor_id VARCHAR(10) PRIMARY KEY,
                                           first_name VARCHAR(50) NOT NULL,
                                           last_name VARCHAR(50) NOT NULL,
-                                          email VARCHAR(100) NOT NULL
+                                          email VARCHAR(100) NOT NULL,
+                                          bio VARCHAR(255),
+                                          phone_number VARCHAR(20)
+
 );
 
 CREATE TABLE IF NOT EXISTS admins (
                                       admin_id VARCHAR(10) PRIMARY KEY,
                                       first_name VARCHAR(50) NOT NULL,
                                       last_name VARCHAR(50) NOT NULL,
-                                      email VARCHAR(100) NOT NULL
+                                      email VARCHAR(100) NOT NULL,
+                                      bio VARCHAR(255),
+                                      phone_number VARCHAR(20)
 );
 
 CREATE TABLE IF NOT EXISTS courses (
@@ -43,11 +51,11 @@ CREATE TABLE IF NOT EXISTS course_material (
                                                FOREIGN KEY (course_id) REFERENCES courses(course_id)
 );
 
-
 CREATE TABLE IF NOT EXISTS enrollments (
-                                           student_id VARCHAR(10),
-                                           course_id INT ,
-                                           PRIMARY KEY (student_id, course_id),
-                                           FOREIGN KEY (student_id) REFERENCES students(student_id),
-                                           FOREIGN KEY (course_id) REFERENCES courses(course_id)
+                                            enrollment_id INT AUTO_INCREMENT PRIMARY KEY,
+                                            student_id VARCHAR(10) NOT NULL,
+                                            course_id INT NOT NULL,
+                                            FOREIGN KEY (student_id) REFERENCES students(student_id),
+                                            FOREIGN KEY (course_id) REFERENCES courses(course_id),
+                                            UNIQUE(student_id, course_id)
 );
