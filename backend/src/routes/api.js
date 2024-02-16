@@ -9,6 +9,7 @@ router.get('/professor/profile/:professor_id', professorCtrl.getProfessorProfile
 router.put('/professor/profile/update/:professor_id', professorCtrl.updateProfileInformation);
 router.get('/professor/students/list/:course_id', professorCtrl.getEnrolledStudentDetails);
 router.post('/admin/register', adminCtrl.registerUser);
+router.post('/admin/student/enroll', adminCtrl.enrollStudent);
 
 module.exports = (sequelize) => {
     // Pass Sequelize instance to controller
