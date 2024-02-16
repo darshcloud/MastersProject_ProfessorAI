@@ -44,8 +44,46 @@ async function getStudentProfileDetails(req, res) {
     }
 }
 
+//Controller Function to update profile information
+async function updateStudentProfileInformation(req, res) {
+    try {
+        if (!sequelizeInstance) {
+            return res.status(500).json({ message: "Sequelize instance is not set." });
+        }
+
+        const Student = require('../models/Student')(sequelizeInstance);
+
+        const { student_id } = req.params;
+
+        // Extract Bio and Phone Number from request body
+        const { bio, phone_number } = req.body;
+
+        // Find the student by studentId
+        const student = await Student.findByPk(student_id);
+
+        // If student does not exist, return an error
+        if (!student) {
+            return res.status(404).json({ message: 'Profile Information not found to Update' });
+        }
+
+        // Update the student's profile information
+        student.bio = bio;
+        student.phone_number = phone_number;
+
+        // Save the changes to the database
+        await student.save();
+
+        // Send a success response once saved
+        res.json({ message: 'Profile Details updated and saved successfully' });
+    } catch (error) {
+        // If an error occurs, send an error response
+        res.status(500).json({ message: error.message });
+    }
+}
+
 
 module.exports = {
     setSequelize,
-    getStudentProfileDetails
+    getStudentProfileDetails,
+    updateStudentProfileInformation
 }
