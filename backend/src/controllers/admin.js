@@ -79,8 +79,44 @@ async function enrollStudent(req, res) {
         res.status(500).json({ message: error.message });
     }
 }
+async function updateStudent(req, res) {
+    try {
+        // Check if Sequelize instance is available
+        if (!sequelizeInstance) {
+            return res.status(500).json({ message: "Sequelize instance is not set." });
+        }
+
+        // Get student_id from request parameters
+        const { student_id } = req.params;
+
+        // Fetch the student with the provided student_id from the database
+        const Student = require('../models/Student')(sequelizeInstance);
+        let student = await Student.findByPk(student_id);
+
+        // Check if student exists
+        if (!student) {
+            return res.status(404).json({ message: "Student not found." });
+        }
+
+        // Update student details
+        const { first_name, last_name, email } = req.body;
+        student = await student.update({
+            first_name,
+            last_name,
+            email
+        });
+
+        // Send success response with updated student details
+        res.json({ message: "Student details updated successfully.", student });
+    } catch (error) {
+        // If an error occurs, send an error response
+        res.status(500).json({ message: error.message });
+    }
+}
+
 module.exports = {
     setSequelize,
     registerUser,
-    enrollStudent
+    enrollStudent,
+    updateStudent
 };
