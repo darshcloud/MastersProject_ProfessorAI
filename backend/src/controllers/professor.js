@@ -46,7 +46,7 @@ async function getProfessorProfileDetails(req, res) {
                 model: Course,
                 attributes: ['course_code', 'course_name']
             }],
-            attributes: ['first_name', 'last_name', 'email']
+            attributes: ['first_name', 'last_name', 'email', 'bio', 'phone_number']
         });
 
         if (!professor) {
