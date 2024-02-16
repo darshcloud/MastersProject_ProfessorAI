@@ -11,6 +11,7 @@ router.get('/professor/students/list/:course_id', professorCtrl.getEnrolledStude
 router.post('/admin/register', adminCtrl.registerUser);
 router.post('/admin/student/enroll', adminCtrl.enrollStudent);
 router.put('/admin/student/:student_id', adminCtrl.updateStudent);
+router.put('/admin/professor/:professor_id', adminCtrl.updateProfessor);
 router.delete('/admin/student/:student_id', adminCtrl.deleteStudent);
 router.delete('/admin/professor/:professor_id', adminCtrl.deleteProfessor);
 

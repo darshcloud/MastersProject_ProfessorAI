@@ -123,6 +123,42 @@ async function updateStudent(req, res) {
         res.status(500).json({ message: error.message });
     }
 }
+
+async function updateProfessor(req, res) {
+    try {
+        // Check if Sequelize instance is available
+        if (!sequelizeInstance) {
+            return res.status(500).json({ message: "Sequelize instance is not set." });
+        }
+
+        // Get professor_id from request parameters
+        const { professor_id } = req.params;
+
+        // Fetch the professor with the provided professor_id from the database
+        const Professor = require('../models/Professor')(sequelizeInstance);
+        let professor = await Professor.findByPk(professor_id);
+
+        // Check if professor exists
+        if (!professor) {
+            return res.status(404).json({ message: "Professor not found." });
+        }
+
+        // Update professor details
+        const { first_name, last_name, email } = req.body;
+        professor = await professor.update({
+            first_name,
+            last_name,
+            email
+        });
+
+        // Send success response with updated professor details
+        res.json({ message: "professor details updated successfully.", professor });
+    } catch (error) {
+        // If an error occurs, send an error response
+        res.status(500).json({ message: error.message });
+    }
+}
+
 async function deleteStudent(req, res) {
     try {
   
@@ -184,5 +220,6 @@ module.exports = {
     enrollStudent,
     updateStudent,
     deleteStudent,
-    deleteProfessor
+    deleteProfessor,
+    updateProfessor
 };
