@@ -5,6 +5,7 @@ const multer = require('multer');
 const professorCtrl = require('../controllers/professor');
 const adminCtrl= require('../controllers/admin');
 const courseMaterialCtrl = require('../controllers/course_material');
+const studentCtrl = require('../controllers/student');
 const upload = multer();
 
 // Define routes
@@ -24,12 +25,15 @@ router.get('/courses/:courseId/materials', courseMaterialCtrl.listAllMaterialsFo
 router.post('/courses/:courseId/materials', upload.single('file'), courseMaterialCtrl.addMaterialForCourse);
 router.put('/courses/:courseId/materials/:id', upload.single('file'), courseMaterialCtrl.updateMaterialForCourse);
 router.delete('/courses/:courseId/materials/:id', courseMaterialCtrl.deleteMaterialForCourse);
+router.get('/student/profile/:student_id', studentCtrl.getStudentProfileDetails);
+router.get('/student/profile/update/:student_id', studentCtrl.updateStudentProfileInformation);
 
 module.exports = (sequelize) => {
     // Pass Sequelize instance to controller
     adminCtrl.setSequelize(sequelize);
     professorCtrl.setSequelize(sequelize);
     courseMaterialCtrl.setSequelize(sequelize);
-
+    studentCtrl.setSequelize(sequelize);
     return router;
 };
+
