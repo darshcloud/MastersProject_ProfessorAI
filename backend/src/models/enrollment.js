@@ -1,18 +1,34 @@
 // models/Enrollment.js
 const { DataTypes } = require('sequelize');
-const Student = require('./student');
-const Course = require('./course');
 
 module.exports = (sequelize) => {
     const Enrollment = sequelize.define('Enrollment', {
+        enrollment_id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true
+        },
         student_id: {
-            type: DataTypes.STRING(10),
-            allowNull: false
+            type: DataTypes.STRING(100),
+            allowNull: false,
+            references: {
+                model: 'students',
+                key: 'student_id'
+            }
+        },
+        course_id: {
+            type: DataTypes.INTEGER(),
+            allowNull: false,
+            references: {
+                model: 'courses',
+                key: 'course_id'
+            },
         }
-    });
+    },  {
+        timestamps: false,
 
-    Enrollment.belongsTo(Student, { foreignKey: 'student_id' });
-    Enrollment.belongsTo(Course, { foreignKey: 'course_id' });
+    });
 
     return Enrollment;
 };

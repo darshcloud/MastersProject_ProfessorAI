@@ -1,6 +1,7 @@
 // models/Professor.js
 
 const { DataTypes } = require('sequelize');
+const Course = require('./Course');
 
 module.exports = (sequelize) => {
     const Professor = sequelize.define('Professor', {
@@ -23,8 +24,11 @@ module.exports = (sequelize) => {
             unique: true
         }
     }, {
+        tableName:'professors',
         timestamps: false // Disable timestamps
     });
+
+    Professor.hasMany(Course(sequelize), { foreignKey: 'professor_id' });
 
     return Professor;
 };
