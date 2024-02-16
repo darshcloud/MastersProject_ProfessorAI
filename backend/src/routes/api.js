@@ -9,6 +9,8 @@ router.get('/professor/profile/:professor_id', professorCtrl.getProfessorProfile
 router.put('/professor/profile/update/:professor_id', professorCtrl.updateProfileInformation);
 router.get('/professor/students/list/:course_id', professorCtrl.getEnrolledStudentDetails);
 router.post('/admin/register', adminCtrl.registerUser);
+router.post('/admin/courses', adminCtrl.addNewCourse)
+router.put('/admin/course/:course_id/assignProfessor',adminCtrl.assignProfessor)
 router.post('/admin/student/enroll', adminCtrl.enrollStudent);
 router.put('/admin/student/:student_id', adminCtrl.updateStudent);
 router.put('/admin/professor/:professor_id', adminCtrl.updateProfessor);
