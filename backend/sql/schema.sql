@@ -7,21 +7,29 @@ CREATE TABLE IF NOT EXISTS students (
                                         student_id VARCHAR(10) PRIMARY KEY,
                                         first_name VARCHAR(50) NOT NULL,
                                         last_name VARCHAR(50) NOT NULL,
-                                        email VARCHAR(100) NOT NULL
+                                        email VARCHAR(100) NOT NULL,
+                                        bio VARCHAR(255),
+                                        phone_number VARCHAR(20)
+
 );
 
 CREATE TABLE IF NOT EXISTS professors (
                                           professor_id VARCHAR(10) PRIMARY KEY,
                                           first_name VARCHAR(50) NOT NULL,
                                           last_name VARCHAR(50) NOT NULL,
-                                          email VARCHAR(100) NOT NULL
+                                          email VARCHAR(100) NOT NULL,
+                                          bio VARCHAR(255),
+                                          phone_number VARCHAR(20)
+
 );
 
 CREATE TABLE IF NOT EXISTS admins (
                                       admin_id VARCHAR(10) PRIMARY KEY,
                                       first_name VARCHAR(50) NOT NULL,
                                       last_name VARCHAR(50) NOT NULL,
-                                      email VARCHAR(100) NOT NULL
+                                      email VARCHAR(100) NOT NULL,
+                                      bio VARCHAR(255),
+                                      phone_number VARCHAR(20)
 );
 
 CREATE TABLE IF NOT EXISTS courses (
@@ -42,7 +50,6 @@ CREATE TABLE IF NOT EXISTS course_material (
                                                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                                                FOREIGN KEY (course_id) REFERENCES courses(course_id)
 );
-
 
 CREATE TABLE IF NOT EXISTS enrollments (
                                             enrollment_id INT AUTO_INCREMENT PRIMARY KEY,
