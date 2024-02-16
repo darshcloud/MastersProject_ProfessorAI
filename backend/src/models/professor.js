@@ -22,6 +22,14 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true
+        },
+        bio: {
+            type: DataTypes.STRING(255), 
+            allowNull: true 
+        },
+        phone_number: {
+            type: DataTypes.STRING(20), 
+            allowNull: true 
         }
     }, {
         tableName:'professors',

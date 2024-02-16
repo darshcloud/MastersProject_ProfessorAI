@@ -27,7 +27,10 @@ module.exports = (sequelize) => {
         }
     },  {
         timestamps: false,
-
+        indexes: [{
+            unique: true,
+            fields: ['student_id', 'course_id']
+        }]
     });
 
     return Enrollment;
