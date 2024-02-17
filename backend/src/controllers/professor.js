@@ -117,10 +117,10 @@ async function getEnrolledStudentDetails(req, res) {
         console.log(students)
 
         const enrolledStudents =  students.map(student => ({
-            student_id: student.student_id,
             first_name: student.first_name,
             last_name: student.last_name,
-            email: student.email
+            email: student.email,
+            phone_number: student.phone_number
         }));
 
         res.json({ enrolledStudents });
