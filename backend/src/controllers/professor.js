@@ -123,6 +123,10 @@ async function getEnrolledStudentDetails(req, res) {
             phone_number: student.phone_number
         }));
 
+        if(enrolledStudents.length === 0){
+            return res.json({ message: "No students enrolled in this course" });
+        }
+
         res.json({ enrolledStudents });
     } catch (error) {
         console.error('Error retrieving enrolled students:', error);
