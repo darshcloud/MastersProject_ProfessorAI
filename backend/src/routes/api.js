@@ -27,7 +27,7 @@ router.post('/courses/:courseId/materials', upload.single('file'), courseMateria
 router.put('/courses/:courseId/materials/:id', upload.single('file'), courseMaterialCtrl.updateMaterialForCourse);
 router.delete('/courses/:courseId/materials/:id', courseMaterialCtrl.deleteMaterialForCourse);
 router.get('/student/profile/:student_id', studentCtrl.getStudentProfileDetails);
-router.get('/student/profile/update/:student_id', studentCtrl.updateStudentProfileInformation);
+router.put('/student/profile/update/:student_id', studentCtrl.updateStudentProfileInformation);
 
 module.exports = (sequelize) => {
     // Pass Sequelize instance to controller
