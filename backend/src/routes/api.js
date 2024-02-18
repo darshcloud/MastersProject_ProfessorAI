@@ -13,6 +13,7 @@ router.get('/professor', professorCtrl.getAllProfessors);
 router.get('/professor/profile/:professor_id', professorCtrl.getProfessorProfileDetails);
 router.put('/professor/profile/update/:professor_id', professorCtrl.updateProfileInformation);
 router.get('/professor/students/list/:course_id', professorCtrl.getEnrolledStudentDetails);
+router.get('/professor/students/search/:course_id', professorCtrl.searchStudents);
 router.post('/admin/register', adminCtrl.registerUser);
 router.post('/admin/courses', adminCtrl.addNewCourse)
 router.put('/admin/course/:course_id/assignProfessor',adminCtrl.assignProfessor)
