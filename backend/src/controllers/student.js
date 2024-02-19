@@ -81,9 +81,50 @@ async function updateStudentProfileInformation(req, res) {
     }
 }
 
+//Controller function for retrieving courses enrolled by a student
+async function getEnrolledCoursesDetails(req, res){
+
+    const Student = require('../models/Student')(sequelizeInstance);
+    const Course = require('../models/Course')(sequelizeInstance);
+
+    try {
+        const studentId = req.params.student_id;
+
+        // Find the student and their enrolled courses
+        const student = await Student.findByPk(studentId, {
+            include: {
+                model: Course,
+                as: 'Courses',
+                through: {
+                    attributes: [],
+                },
+                attributes: ['course_code', 'course_name'],
+            },
+            attributes: [],
+        });
+
+        if (!student) {
+            return res.status(404).json({message:'Student not found'});
+        }
+
+        // Extract the courses and send them in the response
+        const enrolledCourses = student.Courses;
+
+        if(enrolledCourses.length === 0){
+            return res.json({ message: "Not Enrolled in any courses at this time" });
+        }
+        res.json(enrolledCourses);
+
+    } catch (error) {
+        console.error('Error fetching courses for student:', error);
+        res.status(500).json({message: error.message});
+    }
+}
+
 
 module.exports = {
     setSequelize,
     getStudentProfileDetails,
-    updateStudentProfileInformation
+    updateStudentProfileInformation,
+    getEnrolledCoursesDetails
 }
