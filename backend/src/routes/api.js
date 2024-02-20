@@ -26,6 +26,7 @@ router.get('/courses/:courseId/materials', courseMaterialCtrl.listAllMaterialsFo
 router.post('/courses/:courseId/materials', upload.single('file'), courseMaterialCtrl.addMaterialForCourse);
 router.put('/courses/:courseId/materials/:id', upload.single('file'), courseMaterialCtrl.updateMaterialForCourse);
 router.delete('/courses/:courseId/materials/:id', courseMaterialCtrl.deleteMaterialForCourse);
+router.get('/courses/:courseId/materials/:materialId/view/', courseMaterialCtrl.viewMaterialForCourse);
 router.get('/student/profile/:student_id', studentCtrl.getStudentProfileDetails);
 router.put('/student/profile/update/:student_id', studentCtrl.updateStudentProfileInformation);
 router.get('/student/:student_id/courses', studentCtrl.getEnrolledCoursesDetails);
