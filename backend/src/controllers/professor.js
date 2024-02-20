@@ -123,10 +123,82 @@ async function getEnrolledStudentDetails(req, res) {
             phone_number: student.phone_number
         }));
 
+        if(enrolledStudents.length === 0){
+            return res.json({ message: "No students enrolled in this course" });
+        }
+
         res.json({ enrolledStudents });
     } catch (error) {
         console.error('Error retrieving enrolled students:', error);
         res.status(500).json({ message: error.message});
+    }
+}
+
+//Controller function for searching students by name enrolled in the course
+
+const { Op } = require('sequelize');
+async function searchStudents(req, res){
+    try {
+        if (!sequelizeInstance) {
+            return res.status(500).json({ message: "Sequelize instance is not set." });
+        }
+
+        const Course = require('../models/course')(sequelizeInstance);
+        const Enrollment=require('../models/enrollment')(sequelizeInstance);
+        const Student=require('../models/student')(sequelizeInstance);
+
+        const courseId = req.params.course_id;
+        const searchName  = req.query.name;
+
+        if (!courseId) {
+            return res.status(400).json({ message: "Course ID is required" });
+        }
+
+        let whereClause = {};
+        if (searchName) {
+            const names = searchName.split(' ').filter(Boolean);
+
+            if (names.length > 1) {
+                // Search for full name (first and last name)
+                whereClause = {
+                    [Op.and]: [
+                        { first_name: { [Op.like]: `%${names[0]}%` } },
+                        { last_name: { [Op.like]: `%${names[1]}%` } }
+                    ]
+                };
+            } else {
+                // Search for either first name or last name
+                whereClause = {
+                    [Op.or]: [
+                        { first_name: { [Op.like]: `%${names[0]}%` } },
+                        { last_name: { [Op.like]: `%${names[0]}%` } }
+                    ]
+                };
+            }
+        }
+
+        const studentsList = await Student.findAll({
+            include: [{
+                model: Course,
+                through: {
+                    model: Enrollment,
+                    where: { course_id: courseId },
+                    attributes: []
+                },
+                attributes: [],
+                required: true
+            }],
+            where: whereClause,
+            attributes: ['first_name', 'last_name', 'email']
+        });
+
+        if (studentsList.length === 0) {
+            return res.json({ message: "No students with the provided name are enrolled in this course" });
+        }
+
+        res.json(studentsList);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 }
 
@@ -135,7 +207,8 @@ module.exports = {
     getAllProfessors,
     getProfessorProfileDetails,
     updateProfileInformation,
-    getEnrolledStudentDetails
+    getEnrolledStudentDetails,
+    searchStudents
 }
 
 

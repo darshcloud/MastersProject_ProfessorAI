@@ -13,6 +13,7 @@ router.get('/professor', professorCtrl.getAllProfessors);
 router.get('/professor/profile/:professor_id', professorCtrl.getProfessorProfileDetails);
 router.put('/professor/profile/update/:professor_id', professorCtrl.updateProfileInformation);
 router.get('/professor/students/list/:course_id', professorCtrl.getEnrolledStudentDetails);
+router.get('/professor/students/search/:course_id', professorCtrl.searchStudents);
 router.post('/admin/register', adminCtrl.registerUser);
 router.post('/admin/courses', adminCtrl.addNewCourse)
 router.put('/admin/course/:course_id/assignProfessor',adminCtrl.assignProfessor)
@@ -25,8 +26,10 @@ router.get('/courses/:courseId/materials', courseMaterialCtrl.listAllMaterialsFo
 router.post('/courses/:courseId/materials', upload.single('file'), courseMaterialCtrl.addMaterialForCourse);
 router.put('/courses/:courseId/materials/:id', upload.single('file'), courseMaterialCtrl.updateMaterialForCourse);
 router.delete('/courses/:courseId/materials/:id', courseMaterialCtrl.deleteMaterialForCourse);
+router.get('/courses/:courseId/materials/:materialId/view/', courseMaterialCtrl.viewMaterialForCourse);
 router.get('/student/profile/:student_id', studentCtrl.getStudentProfileDetails);
-router.get('/student/profile/update/:student_id', studentCtrl.updateStudentProfileInformation);
+router.put('/student/profile/update/:student_id', studentCtrl.updateStudentProfileInformation);
+router.get('/student/:student_id/courses', studentCtrl.getEnrolledCoursesDetails);
 
 module.exports = (sequelize) => {
     // Pass Sequelize instance to controller

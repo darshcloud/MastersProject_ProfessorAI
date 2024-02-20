@@ -1,6 +1,7 @@
 // Controller file for Viewing course content
 const AWS = require('aws-sdk');
 const { v4: uuidv4 } = require('uuid');
+const fs = require('fs');
 
 
 AWS.config.update({
@@ -10,6 +11,9 @@ AWS.config.update({
 });
 
 const s3 = new AWS.S3();
+const cloudfrontPublicKeyId = process.env.CLOUDFRONT_PUBLIC_KEY_ID;
+const cloudfrontPrivateKey = fs.readFileSync(process.env.CLOUDFRONT_PRIVATE_KEY_PATH, 'utf8');
+const cloudFrontSigner = new AWS.CloudFront.Signer(cloudfrontPublicKeyId, cloudfrontPrivateKey);
 
 let sequelizeInstance; // Sequelize instance
 
@@ -158,6 +162,32 @@ async function deleteMaterialForCourse(req, res) {
     }
 };
 
+async function viewMaterialForCourse(req, res){
+
+    const {courseId, materialId } = req.params;
+
+    try {
+        const material = await getCourseMaterial().findOne({where: {material_id: materialId, course_id: courseId}});
+
+        if (!material) {
+            return res.status(404).json({message: 'Material not found for the course'});
+        }
+
+        // Generate a cloudfront signed URL for the S3 course material objects
+        const oneDay = 24*60*60*1000;
+        const signedUrl = cloudFrontSigner.getSignedUrl({
+            url: `https://${process.env.CLOUDFRONT_DOMAIN_NAME}/${material.URI}`,
+            expires: Math.floor((Date.now() + oneDay) / 1000), // URL expires in now + 1 day
+        });
+
+        res.json({ downloadLink: signedUrl });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error in obtaining link for the course material', error: error.message });
+    }
+}
+
 function getCourseMaterial()  {
     if (!sequelizeInstance) {
         throw new Error('Sequelize is not initialized');
@@ -172,5 +202,6 @@ module.exports = {
     listAllMaterialsForCourse,
     addMaterialForCourse,
     updateMaterialForCourse,
-    deleteMaterialForCourse
+    deleteMaterialForCourse,
+    viewMaterialForCourse
 };
