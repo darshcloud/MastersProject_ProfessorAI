@@ -285,6 +285,64 @@ async function deleteProfessor(req, res) {
 
 
 }
+const jwt = require('jsonwebtoken');
+ // Secret key for JWT (should be securely managed and not exposed)
+const jwtSecretKey = process.env.jwtSecretKey;
+
+// Admin login function
+async function adminLogin(req, res) {
+    const { email, password } = req.body;
+
+    // Admin credentials (these should be securely stored or managed)
+    const adminEmail =  process.env.adminEmail;
+    const adminPassword = process.env.adminPassword;
+   
+
+    if (email === adminEmail && password === adminPassword) {
+        try {
+            // Generate JWT token for the admin
+            const token = jwt.sign(
+                { userId: "admin", email: adminEmail },
+                jwtSecretKey,
+                { expiresIn: "1h" }
+            );
+
+            return res.status(200).json({
+                success: true,
+                message: "Admin login successful",
+                token: token,
+            });
+        } catch (error) {
+            console.error("JWT Token generation error:", error);
+            return res.status(500).json({ message: "Failed to generate token for admin." });
+        }
+    } else {
+        return res.status(401).json({ message: "Invalid admin credentials." });
+    }
+} 
+
+const requireAdmin = (req, res, next) => {
+    const authHeader = req.headers.authorization;
+
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+        const token = authHeader.substring(7, authHeader.length); // Extract the token from the header
+
+        jwt.verify(token, jwtSecretKey, (err, decoded) => {
+            if (err) {
+                return res.status(403).json({ message: "Access denied. Invalid token." });
+            } else {
+                if (decoded.email === process.env.adminEmail && decoded.userId === "admin") {
+                    next(); // The user is an admin, proceed to the next middleware
+                } else {
+                    return res.status(403).json({ message: "Access denied. Not an admin." });
+                }
+            }
+        });
+    } else {
+        return res.status(401).json({ message: "Access denied. No token provided." });
+    }
+};
+
 
 module.exports = {
     setSequelize,
@@ -295,5 +353,7 @@ module.exports = {
     deleteProfessor,
     updateProfessor,
     addNewCourse,
-    assignProfessor
+    assignProfessor,
+    adminLogin,
+    requireAdmin
 };
