@@ -46,7 +46,7 @@ async function getProfessorProfileDetails(req, res) {
                 model: Course,
                 attributes: ['course_code', 'course_name']
             }],
-            attributes: ['first_name', 'last_name', 'email']
+            attributes: ['first_name', 'last_name', 'email', 'bio', 'phone_number']
         });
 
         if (!professor) {
@@ -72,13 +72,8 @@ async function updateProfileInformation(req, res) {
 
         const { professor_id } = req.params;
 
-        // Extract first_name and last_name from request body
-        const { first_name, last_name } = req.body;
-
-        // Check for the presence of required fields
-        if (!first_name || !last_name) {
-            return res.status(400).json({ message: 'First name and Last name are required' });
-        }
+        // Extract Bio and Phone Number from request body
+        const { bio, phone_number } = req.body;
 
         // Find the professor by professorId
         const professor = await Professor.findByPk(professor_id);
@@ -89,8 +84,8 @@ async function updateProfileInformation(req, res) {
         }
 
         // Update the professor's profile information
-        professor.first_name = first_name;
-        professor.last_name = last_name;
+        professor.bio = bio;
+        professor.phone_number = phone_number;
 
         // Save the changes to the database
         await professor.save();
@@ -104,7 +99,6 @@ async function updateProfileInformation(req, res) {
 }
 
 async function getEnrolledStudentDetails(req, res) {
-
     const Course = require('../models/course')(sequelizeInstance);
     const Enrollment=require('../models/enrollment')(sequelizeInstance);
     const Student=require('../models/student')(sequelizeInstance);
@@ -123,11 +117,15 @@ async function getEnrolledStudentDetails(req, res) {
         console.log(students)
 
         const enrolledStudents =  students.map(student => ({
-            student_id: student.student_id,
             first_name: student.first_name,
             last_name: student.last_name,
-            email: student.email
+            email: student.email,
+            phone_number: student.phone_number
         }));
+
+        if(enrolledStudents.length === 0){
+            return res.json({ message: "No students enrolled in this course" });
+        }
 
         res.json({ enrolledStudents });
     } catch (error) {
@@ -136,14 +134,82 @@ async function getEnrolledStudentDetails(req, res) {
     }
 }
 
+//Controller function for searching students by name enrolled in the course
+
+const { Op } = require('sequelize');
+async function searchStudents(req, res){
+    try {
+        if (!sequelizeInstance) {
+            return res.status(500).json({ message: "Sequelize instance is not set." });
+        }
+
+        const Course = require('../models/course')(sequelizeInstance);
+        const Enrollment=require('../models/enrollment')(sequelizeInstance);
+        const Student=require('../models/student')(sequelizeInstance);
+
+        const courseId = req.params.course_id;
+        const searchName  = req.query.name;
+
+        if (!courseId) {
+            return res.status(400).json({ message: "Course ID is required" });
+        }
+
+        let whereClause = {};
+        if (searchName) {
+            const names = searchName.split(' ').filter(Boolean);
+
+            if (names.length > 1) {
+                // Search for full name (first and last name)
+                whereClause = {
+                    [Op.and]: [
+                        { first_name: { [Op.like]: `%${names[0]}%` } },
+                        { last_name: { [Op.like]: `%${names[1]}%` } }
+                    ]
+                };
+            } else {
+                // Search for either first name or last name
+                whereClause = {
+                    [Op.or]: [
+                        { first_name: { [Op.like]: `%${names[0]}%` } },
+                        { last_name: { [Op.like]: `%${names[0]}%` } }
+                    ]
+                };
+            }
+        }
+
+        const studentsList = await Student.findAll({
+            include: [{
+                model: Course,
+                through: {
+                    model: Enrollment,
+                    where: { course_id: courseId },
+                    attributes: []
+                },
+                attributes: [],
+                required: true
+            }],
+            where: whereClause,
+            attributes: ['first_name', 'last_name', 'email']
+        });
+
+        if (studentsList.length === 0) {
+            return res.json({ message: "No students with the provided name are enrolled in this course" });
+        }
+
+        res.json(studentsList);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
 module.exports = {
     setSequelize,
     getAllProfessors,
     getProfessorProfileDetails,
     updateProfileInformation,
-    getEnrolledStudentDetails
-};
-
+    getEnrolledStudentDetails,
+    searchStudents
+}
 
 
 
