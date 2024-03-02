@@ -6,6 +6,9 @@ import Home from './pages/HomePage/Home';
 import About from './pages/About/About';
 import SignIn from './pages/SignIn/SignIn';
 import ScrollToTop from './components/ScrollToTop';
+import Student from './pages/studentpage/Student';
+import Course from './pages/studentpage/Course';
+import StudentDashboard from './pages/studentpage/StudentDashboard';
 
 function App() {
   return (
@@ -18,6 +21,9 @@ function App() {
             <Route path='/' exact component={Home} />
             <Route path='/About' component={About} />
             <Route path='/SignIn' component={SignIn} />
+            <Route path='/student' component={Student} />
+            <Route path='/viewcourses' component={Course} />
+            <Route path='/dashboard' component={StudentDashboard} />
           </Switch>
           <Footer />
       </Router>
