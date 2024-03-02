@@ -18,7 +18,7 @@ module.exports = (sequelize) => {
             allowNull: false
         },
         file_type: {
-            type: DataTypes.STRING(50),
+            type: DataTypes.STRING(100),
             allowNull: false
         },
         course_id: {
