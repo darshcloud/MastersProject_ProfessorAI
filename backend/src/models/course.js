@@ -18,7 +18,7 @@ module.exports = (sequelize) => {
             allowNull: false
         },
         professor_id: {
-            type: DataTypes.STRING(100),
+            type: DataTypes.INTEGER,
             allowNull: true,
             references: {
                 model: 'professors',
