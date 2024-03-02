@@ -10,7 +10,7 @@ module.exports = (sequelize) => {
             autoIncrement: true
         },
         student_id: {
-            type: DataTypes.STRING(100),
+            type: DataTypes.INTEGER,
             allowNull: false,
             references: {
                 model: 'students',
