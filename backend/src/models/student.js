@@ -4,8 +4,10 @@ const { DataTypes } = require('sequelize');
 module.exports = (sequelize) => {
     const Student = sequelize.define('Student', {
         student_id: {
-            type: DataTypes.STRING(10),
-            primaryKey: true
+            type: DataTypes.INTEGER, 
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true
         },
         first_name: {
             type: DataTypes.STRING(50),
@@ -26,6 +28,10 @@ module.exports = (sequelize) => {
         phone_number: {
             type: DataTypes.STRING(20), 
             allowNull: true 
+        },
+        user_role: { 
+            type: DataTypes.STRING(20),
+            allowNull: false
         }
     }, {
         timestamps: false // Disable timestamps

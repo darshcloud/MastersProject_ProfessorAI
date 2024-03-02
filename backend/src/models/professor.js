@@ -6,9 +6,10 @@ const Course = require('./Course');
 module.exports = (sequelize) => {
     const Professor = sequelize.define('Professor', {
         professor_id: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             allowNull: false,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement: true 
         },
         first_name: {
             type: DataTypes.STRING,
@@ -30,10 +31,14 @@ module.exports = (sequelize) => {
         phone_number: {
             type: DataTypes.STRING(20), 
             allowNull: true 
+        },
+        user_role: { 
+            type: DataTypes.STRING(20),
+            allowNull: false
         }
     }, {
         tableName:'professors',
-        timestamps: false // Disable timestamps
+        timestamps: false 
     });
 
     Professor.hasMany(Course(sequelize), { foreignKey: 'professor_id' });

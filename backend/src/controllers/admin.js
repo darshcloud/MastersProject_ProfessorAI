@@ -8,36 +8,44 @@ async function registerUser(req, res) {
         if (!sequelizeInstance) {
             return res.status(500).json({ message: "Sequelize instance is not set." });
         }
-
-        const { professor_id, student_id, first_name, last_name, email, bio, phone_number, role } = req.body;
-
-        if (role !== 'professor' && role !== 'student') {
+        const { first_name, last_name, email, bio, phone_number, user_role } = req.body;
+        if (user_role !== 'professor' && user_role !== 'student') {
             return res.status(400).json({ message: "Invalid role. Role should be either 'professor' or 'student'." });
         }
         if (!first_name || !last_name || !email || !first_name.trim() || !last_name.trim() || !email.trim()) {
             return res.status(400).json({ message: "All fields (first name, last name, email) are required and cannot be blank." });
         }
+        // Check if the email already exists in either students or professors tables
+        const ProfessorModel = require('../models/Professor')(sequelizeInstance);
+        const StudentModel = require('../models/Student')(sequelizeInstance);
+
+        const existingProfessor = await ProfessorModel.findOne({ where: { email: email } });
+        const existingStudent = await StudentModel.findOne({ where: { email: email } });
+
+        if (existingProfessor || existingStudent) {
+            return res.status(400).json({ message: "Email already exists. Please use a different email." });
+        }
 
         let Model, userAttributes;
-        if (role === 'professor') {
-            Model = require('../models/Professor')(sequelizeInstance);
+        if (user_role === 'professor') {
+            Model = ProfessorModel;
             userAttributes = {
-                professor_id,
                 first_name,
                 last_name,
                 email,
-                bio: bio || null, // Explicitly set to null if not provided
-                phone_number: phone_number || null // Explicitly set to null if not provided
+                bio: bio || null, 
+                phone_number: phone_number || null, 
+                user_role: 'professor'
             };
-        } else { // role === 'student'
-            Model = require('../models/Student')(sequelizeInstance);
+        } else { 
+            Model = StudentModel;
             userAttributes = {
-                student_id,
                 first_name,
                 last_name,
                 email,
-                bio: bio || null, // Explicitly set to null if not provided
-                phone_number: phone_number || null // Explicitly set to null if not provided
+                bio: bio || null,
+                phone_number: phone_number || null,
+                user_role: 'student'
             };
         }
 
@@ -48,8 +56,6 @@ async function registerUser(req, res) {
         res.status(500).json({ message: error.message });
     }
 }
-
-
 async function addNewCourse(req, res) {
     try {
         if (!sequelizeInstance) {
