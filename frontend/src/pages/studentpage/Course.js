@@ -14,7 +14,7 @@ const Course = () => {
         <button>Student Home</button> {/* Changed text to match screenshot */}
         <div className="right-menu">
           <button>View profile</button>
-          <button>Logout</button>
+          {/*<button>Logout</button>*/}
         </div>
       </div>
       <div className="content">
@@ -38,25 +38,7 @@ const Course = () => {
           ))}
         </div>
       </div>
-      <ChatBot
-      steps={[
-        {
-          id: '1',
-          message: 'What is your name?',
-          trigger: '2',
-        },
-        {
-          id: '2',
-          user: true,
-          trigger: '3',
-        },
-        {
-          id: '3',
-          message: 'Hi {previousValue}, nice to meet you!',
-          end: true,
-        },
-      ]}
-    />
+      {/* chatbot comes in this page */}
     </div>
     
   );

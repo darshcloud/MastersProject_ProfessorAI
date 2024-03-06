@@ -17,7 +17,7 @@ const Student = () => {
         <button>Student Home</button> {/* Changed text to match screenshot */}
         <div className="right-menu">
           <button>View profile</button>
-          <button>Logout</button>
+          {/*<button>Logout</button>*/}
         </div>
       </div>
       <div className="content">

@@ -19,7 +19,7 @@ const StudentDashboard = () => {
     <div className="dashboard">
       <div className="header">
         <button className="home-button">Student Home</button>
-        <button className="logout-button">Logout</button>
+        {/*<button className="logout-button">Logout</button>*/}
       </div>
       <div className="content">
         <div className="sub-content"> {/* This container will hold both content1 and content2 side by side */}
