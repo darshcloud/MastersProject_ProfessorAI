@@ -1,5 +1,6 @@
 import React from 'react';
-import './StudentDashboard.css'; // Ensure this CSS file exists and is correctly linked
+import './StudentDashboard.css';
+import Navigation from "./StudentNav"; // Ensure this CSS file exists and is correctly linked
 
 const StudentDashboard = () => {
   const courses = [
@@ -17,10 +18,7 @@ const StudentDashboard = () => {
 
   return (
     <div className="dashboard">
-      <div className="header">
-        <button className="home-button">Student Home</button>
-        {/*<button className="logout-button">Logout</button>*/}
-      </div>
+      <Navigation/>
       <div className="content">
         <div className="sub-content"> {/* This container will hold both content1 and content2 side by side */}
           <div className="content1">

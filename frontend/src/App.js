@@ -21,9 +21,12 @@ function App() {
             <Route path='/' exact component={Home} />
             <Route path='/About' component={About} />
             <Route path='/SignIn' component={SignIn} />
-            <Route path='/student' component={Student} />
-            <Route path='/viewcourses' component={Course} />
-            <Route path='/dashboard' component={StudentDashboard} />
+            <Route path='/ViewCourses' component={Course} />
+              <Switch>
+                  <Route path="/StudentHome" component={Student} />
+                  <Route path="/ViewProfile" component={StudentDashboard} />
+                  <Route path="/" exact component={Student} />
+              </Switch>
           </Switch>
           <Footer />
       </Router>

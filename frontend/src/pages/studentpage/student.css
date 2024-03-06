@@ -13,8 +13,8 @@ code {
       monospace;
 }
 
-/* Dashboard styling */
 .dashboard {
+    min-height: 560px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -22,16 +22,15 @@ code {
     align-self: center;
 }
 
-/* Header styling */
 .header {
     background-color: #f4f4f4;
     padding: 20px;
     width: 100%;
-    max-width: 960px; /* Maximum width */
+    max-width: 960px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px; /* Space below the header */
+    margin-bottom: 20px;
 }
 
 .header button {
@@ -45,12 +44,12 @@ code {
 }
 
 .header button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #0056b3;
 }
 
 .right-menu {
     display: flex;
-    gap: 10px; /* Space between menu items */
+    gap: 10px;
 }
 
 
