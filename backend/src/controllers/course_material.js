@@ -2,6 +2,7 @@
 const AWS = require('aws-sdk');
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
+const path = require('path');
 
 
 AWS.config.update({
@@ -54,7 +55,7 @@ async function addMaterialForCourse(req, res) {
         return res.status(400).json({ message: 'File already exists' });
     }
 
-    const filename = uuidv4(); // Generate a unique filename
+    const filename = uuidv4() + path.extname(file.originalname); // Generate a unique filename
 
     try {
         // Upload file to S3
@@ -74,7 +75,29 @@ async function addMaterialForCourse(req, res) {
             file_type: file.mimetype,
             course_id: courseId
         });
+        let messageToSend = {
+            course_id:courseId,
+            file_id:uploadResult.Key,
+            filetype:file.mimetype,
+            action:'create',
+        };
+        let params = {
+            Message: JSON.stringify(messageToSend),
+            TopicArn: process.env.SNS_TOPIC_ARN,
+            MessageStructure:'string',
+        };
 
+        var publishTextPromise = new AWS.SNS({apiVersion: '2010-03-31'}).publish(params).promise();
+
+// Handle promise's fulfilled/rejected states
+        publishTextPromise.then(
+            function(data) {
+                console.log(`Message ${params.Message} sent to the topic ${params.TopicArn}`);
+                console.log("MessageID is " + data.MessageId);
+            }).catch(
+            function(err) {
+                console.error(err, err.stack);
+            });
         res.status(201).json(material);
     } catch (error) {
         res.status(500).json({ message: 'Error adding material for course', error: error.message });
@@ -119,6 +142,30 @@ async function  updateMaterialForCourse(req, res) {
             }
 
         await material.update({ updated_at: new Date() });
+
+        let messageToSend = {
+            course_id:courseId,
+            file_id:material.URI,
+            filetype:file.mimetype,
+            action:'create',
+        };
+        let params_sns = {
+            Message: JSON.stringify(messageToSend),
+            TopicArn: process.env.SNS_TOPIC_ARN,
+            MessageStructure:'string',
+        };
+
+        var publishTextPromise = new AWS.SNS({apiVersion: '2010-03-31'}).publish(params_sns).promise();
+
+// Handle promise's fulfilled/rejected states
+        publishTextPromise.then(
+            function(data) {
+                console.log(`Message ${params_sns.Message} sent to the topic ${params_sns.TopicArn}`);
+                console.log("MessageID is " + data.MessageId);
+            }).catch(
+            function(err) {
+                console.error(err, err.stack);
+            });
         res.json({ message: 'Material updated successfully for course' });
     } catch (error) {
         res.status(500).json({ message: 'Error updating material for course', error: error.message });
@@ -156,6 +203,30 @@ async function deleteMaterialForCourse(req, res) {
             return  res.status(404).json({"error": "file not found"})
         }
         await material.destroy();
+
+        let messageToSend = {
+            course_id:courseId,
+            file_id:material.URI,
+            filetype:material.file_type,
+            action:'delete',
+        };
+        let params_sns = {
+            Message: JSON.stringify(messageToSend),
+            TopicArn: process.env.SNS_TOPIC_ARN,
+            MessageStructure:'string',
+        };
+
+        var publishTextPromise = new AWS.SNS({apiVersion: '2010-03-31'}).publish(params_sns).promise();
+
+// Handle promise's fulfilled/rejected states
+        publishTextPromise.then(
+            function(data) {
+                console.log(`Message ${params_sns.Message} sent to the topic ${params_sns.TopicArn}`);
+                console.log("MessageID is " + data.MessageId);
+            }).catch(
+            function(err) {
+                console.error(err, err.stack);
+            });
         res.json({ message: 'Material deleted successfully for course' });
     } catch (error) {
         res.status(500).json({ message: 'Error deleting material for course', error: error.message });
