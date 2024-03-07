@@ -79,6 +79,15 @@ code {
     width: 100%; /* Ensure it takes the full width of its container */
 }
 
+.courses .course {
+    transition: transform 0.3s ease; /* Smooth transition for scale */
+    cursor: pointer; /* Change cursor to indicate it's clickable */
+}
+
+.courses .course:hover {
+    transform: scale(1.05); /* Slightly enlarge the course item */
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2); /* Optional: Add shadow for better effect */
+}
 
 /* Individual course styling */
 .course {
