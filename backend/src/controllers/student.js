@@ -98,7 +98,7 @@ async function getEnrolledCoursesDetails(req, res){
                 through: {
                     attributes: [],
                 },
-                attributes: ['course_code', 'course_name'],
+                attributes: ['course_id', 'course_code', 'course_name'],
             },
             attributes: [],
         });

@@ -3,6 +3,7 @@ const { Sequelize } = require('sequelize');
 const dotenv = require('dotenv');
 const {OAuth2Client} = require('google-auth-library');
 const app = express();
+const cors = require('cors');
 
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
@@ -11,6 +12,11 @@ const oAuth2Client = new OAuth2Client(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
 
 // Generate a URL that asks permissions for the user's email and profile
 const SCOPES = ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email'];
+
+const corsOptions = {
+    origin: 'http://localhost:3001', // Replace with the URL of frontend of our custom domain
+    optionsSuccessStatus: 200
+};
 
 app.get('/auth/google', (req, res) => {
     // Generate the Google Authentication URL
@@ -84,6 +90,9 @@ sequelize.authenticate()
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+
+//To allow cors
+app.use(cors(corsOptions));
 
 // Load routes
 const apiRoutes = require('./src/routes/api');
