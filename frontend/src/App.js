@@ -21,11 +21,11 @@ function App() {
             <Route path='/' exact component={Home} />
             <Route path='/About' component={About} />
             <Route path='/SignIn' component={SignIn} />
-            <Route path='/ViewCourses' component={Course} />
               <Switch>
                   <Route path="/StudentHome" component={Student} />
                   <Route path="/ViewProfile" component={StudentDashboard} />
                   <Route path="/" exact component={Student} />
+                  <Route path='/ViewCourses/:courseId' component={Course} />
               </Switch>
           </Switch>
           <Footer />
