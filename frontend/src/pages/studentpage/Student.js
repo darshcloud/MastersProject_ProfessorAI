@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import './student.css';
 import Navigation from "./StudentNav";
 import axios from 'axios';
+import Alert from '@mui/material/Alert';
 
 
 const Student = () => {
   const [courses, setCourses] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
   const studentId = 1; // Replace with actual ID coming from SSO based on login
-  const backendUrl=process.env.REACT_APP_BACKEND_URL;
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -22,8 +23,13 @@ const Student = () => {
               }}
         );
 
-        setCourses(response.data);
-        setErrorMessage('');
+        if(response.data.length > 0){
+          setCourses(response.data);
+          setErrorMessage('');
+        } else {
+          setErrorMessage('You are not enrolled in any courses at the moment!');
+        }
+
       } catch (error) {
         // catch the error message from backend
         setErrorMessage(error.response?.data?.message || 'An unexpected error occurred while retrieving the courses.');
@@ -37,13 +43,13 @@ const Student = () => {
   const studentName = "Priscilla Chay Test"; //Need to retrieve student name dynamically from SSO details
 
   return (
-    <div className="dashboard">
+    <div className="home">
       <Navigation />
       <div className="content">
         <div className="welcome">
           <h2>Welcome {studentName}!<br/> Exciting Learning Ahead! Here is your list of enrolled courses.</h2>
         </div>
-        {errorMessage && <div className="error-message">{errorMessage}</div>}
+        {errorMessage &&  <Alert severity="error" variant="filled">{errorMessage}</Alert>}
         <div className="courses">
           {courses.map((course) => (
             <div key={course.course_id} className="course">

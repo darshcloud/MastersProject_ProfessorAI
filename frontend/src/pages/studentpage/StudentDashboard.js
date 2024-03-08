@@ -1,48 +1,157 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { TextField, Button, Grid, IconButton} from '@mui/material';
+import Alert from '@mui/material/Alert';
+import CloseIcon from '@mui/icons-material/Close';
 import './StudentDashboard.css';
-import Navigation from "./StudentNav"; // Ensure this CSS file exists and is correctly linked
+import Navigation from "./StudentNav";
+import image from './avatar.jpg';
 
 const StudentDashboard = () => {
-  const courses = [
-    { id: 1, name: 'Course 1', professorEmail: 'professor1@example.com' },
-    { id: 2, name: 'Course 2', professorEmail: 'professor2@example.com' },
-    { id: 3, name: 'Course 3', professorEmail: 'professor3@example.com' },
-  ];
+    const [studentDetails, setStudentDetails] = useState({
+        first_name: '',
+        last_name: '',
+        email: '',
+        bio: '',
+        phone_number: '',
+    });
+    const [alert, setAlert] = useState({ show: false, message: '', type: '' });
 
-  // You can replace these details with actual data
-  const studentDetails = {
-    name: 'John Doe',
-    email: 'johndoe@example.com',
-    id: '123456',
-  };
+    const studentId = '1'; // replace with SSO login student id
+    const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
-  return (
-    <div className="dashboard">
-      <Navigation/>
-      <div className="content">
-        <div className="sub-content"> {/* This container will hold both content1 and content2 side by side */}
-          <div className="content1">
-            <h2>Enrolled courses</h2>
-            {courses.map(course => (
-              <div key={course.id} className="course">
-                <h3>{course.name}</h3>
-                <p>{course.professorEmail}</p>
-              </div>
-            ))}
-          </div>
-          <div className="content2">
-            <h2>Student details</h2>
-            <div className="student-info">
-              <p><strong>Name:</strong> {studentDetails.name}</p>
-              <p><strong>Email:</strong> {studentDetails.email}</p>
-              <p><strong>ID:</strong> {studentDetails.id}</p>
+    useEffect(() => {
+        const fetchProfileInformation = async () => {
+            try {
+                const response = await axios.get(
+                    `${backendUrl}/api/student/profile/${studentId}`, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            //'Authorization' : `token ${localStorage.getItem('token')}`,
+                            "Access-Control-Allow-Origin": "*"
+                        }}
+                );
+                setStudentDetails(response.data);
+            } catch (error) {
+                // Handle the error
+                setAlert({ show: true, message: 'Failed to load student data', type: 'error' });
+            }
+        };
+
+        fetchProfileInformation();
+    }, [studentId, backendUrl]);
+    const handleInputChange = (e) => {
+        setStudentDetails({
+            ...studentDetails,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const handleClear = () => {
+        setStudentDetails({
+            ...studentDetails,
+            bio: '',
+            phone_number: '',
+        });
+    };
+
+    const handleSave = async () => {
+        try {
+             await axios.put(`${backendUrl}/api/student/profile/update/${studentId}`, {
+                bio: studentDetails.bio,
+                phone_number: studentDetails.phone_number
+            });
+
+            setAlert({ show: true, message: 'Profile updated successfully!', type: 'success' });
+        } catch (error) {
+            setAlert({ show: true, message: 'Error updating profile.', type: 'error' });
+        }
+    };
+
+    const handleCloseAlert = () => {
+        setAlert({ ...alert, show: false });
+    };
+
+    return (
+        <div className="dashboard">
+            <Navigation />
+            <div className="content">
+                <Grid container spacing={2} alignItems="center">
+                    <Grid item xs={12} md={3}>
+                        <img
+                            /* Image by <a href="https://www.freepik.com/free-psd/3d-illustration-human-avatar-profile_58509056.htm#query=happy%20avatar&position=21&from_view=keyword&track=ais&uuid=0f376cd8-810e-4240-9f4a-6e1911ef6ebe">Freepik</a> */
+                            src={image} // Replace with the path to your image
+                            alt="ProfilePicture"
+                            style={{width: '100%', height: 'auto'}}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={9}>
+                        <h2>Personal Information</h2><br/>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <TextField label="First Name" name="first_name" value={studentDetails.first_name} fullWidth InputProps={{ readOnly: true }} />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField label="Last Name" name="last_name" value={studentDetails.last_name} fullWidth InputProps={{ readOnly: true }} />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField label="Email" value={studentDetails.email} fullWidth InputProps={{ readOnly: true }} />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    label="Bio"
+                                    name="bio"
+                                    value={studentDetails.bio}
+                                    onChange={handleInputChange}
+                                    multiline
+                                    fullWidth
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    label="Phone Number"
+                                    name="phone_number"
+                                    value={studentDetails.phone_number}
+                                    onChange={handleInputChange}
+                                    fullWidth
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <div className="buttonpanel">
+                                    <Button variant="contained" style={{ backgroundColor: 'primary' }} onClick={handleSave}>
+                                        Save
+                                    </Button>
+                                    <Button variant="contained" style={{ backgroundColor: 'red' }} onClick={handleClear}>
+                                        Clear
+                                    </Button>
+                                </div>
+                            </Grid>
+                        </Grid>
+                        <br/>
+                        {alert.show && (
+                            <Alert
+                                variant="filled"
+                                severity={alert.type}
+                                action={
+                                    <IconButton
+                                        aria-label="close"
+                                        color="inherit"
+                                        size="small"
+                                        onClick={handleCloseAlert}
+                                    >
+                                        <CloseIcon fontSize="inherit" />
+                                    </IconButton>
+                                }
+                            >
+                                {alert.message}
+                            </Alert>
+                        )}
+                    </Grid>
+                </Grid>
             </div>
-            <button>Reset Password</button>
-          </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
+
 
 export default StudentDashboard;
