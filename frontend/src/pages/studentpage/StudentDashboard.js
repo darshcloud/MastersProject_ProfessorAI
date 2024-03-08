@@ -114,6 +114,12 @@ const StudentDashboard = () => {
                                     value={studentDetails.phone_number}
                                     onChange={handleInputChange}
                                     fullWidth
+                                    onKeyPress={(event) => {
+                                        // Allow only numeric input and limit to 10 digits
+                                        if (!/[0-9]/.test(event.key) || event.target.value.length >= 10) {
+                                            event.preventDefault();
+                                        }
+                                    }}
                                 />
                             </Grid>
                             <Grid item xs={12}>
