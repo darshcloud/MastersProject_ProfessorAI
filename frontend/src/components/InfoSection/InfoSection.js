@@ -17,7 +17,8 @@ import { Link } from 'react-router-dom'
     img,
     alt,
     imgStart,
-    start
+    start,
+    buttonClick
 }) => {
     return (
         <>
@@ -30,7 +31,7 @@ import { Link } from 'react-router-dom'
                             <Heading lightText={lightText}>{headline}</Heading>
                             <Subtitle lightTextDesc={lightTextDesc}>{description}</Subtitle>
                             <Link to='/SignIn'>
-                            <Button big fontBig primary={primary}>
+                            <Button big fontBig primary={primary} onClick={buttonClick}>
                                 {buttonLabel}
                             </Button>
                             </Link>
