@@ -25,7 +25,7 @@ function App() {
             <Route path='/About' component={About} />
             <Route path='/SignIn' component={SignIn} />
             <ProtectedRoute path='/student' component={Student} allowedRoles={['student']} />
-            <ProtectedRoute path='/viewcourses' component={Course} allowedRoles={['student']} />
+            <ProtectedRoute path='/viewcourses/:courseId' component={Course} allowedRoles={['student']} />
             <ProtectedRoute path='/studenthome' component={Student} allowedRoles={['student']} />
               <ProtectedRoute path='/viewprofile' component={StudentDashboard} allowedRoles={['student']} />
             <ProtectedRoute path="/professor" component={Professor} allowedRoles={['professor']}/>

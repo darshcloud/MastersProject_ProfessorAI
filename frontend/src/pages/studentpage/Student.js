@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { useHistory } from 'react-router-dom';
 import './student.css';
 import axios from 'axios';
 import Alert from '@mui/material/Alert';
@@ -39,6 +40,11 @@ const Student = () => {
     fetchCourses();
   }, [studentId, backendUrl]);
 
+  const history = useHistory();
+
+  const navigateToCourse = (courseId) => {
+    history.push(`/ViewCourses/${courseId}`);
+  };
 
   return (
       <div className="home">
@@ -49,8 +55,14 @@ const Student = () => {
           {errorMessage &&  <Alert severity="error" variant="filled">{errorMessage}</Alert>}
           <div className="courses">
             {courses.map((course, index) => (
-                <div key={course.course_id} className="course">
-                  <h3 style={{ backgroundColor: colors[index % colors.length] }}>{course.course_code}</h3>
+                <div
+                    key={course.course_id}
+                    className="course"
+                    onClick={() => navigateToCourse(course.course_id)}
+                    style={{cursor: 'pointer'}}>
+                  <h3 style={{backgroundColor: colors[index % colors.length]}}>
+                    {course.course_code}
+                  </h3>
                   <p>Course Name: {course.course_name}</p>
                 </div>
             ))}
