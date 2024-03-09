@@ -1,64 +1,69 @@
-import React from 'react';
-import './course.css'; // Your CSS file for styling
-import ChatBot from 'react-simple-chatbot';
-const Course = () => {
-  const courses = [
-    { id: 1, name: 'Course-1', professor: 'Professor Name 1', materials: ['PDF 1', 'PDF 2', 'PDF 3'] },
-  ];
+import React, { useState, useEffect } from 'react';
+import './course.css';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import Alert from '@mui/material/Alert';
+import {Button} from "@mui/material";
 
-  const studentName = "Student Name"; // Replace with actual data source
+
+const Course = () => {
+  const [courseMaterials, setCourseMaterials] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
+  const { courseId } = useParams();
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
+
+  useEffect(() => {
+    const fetchCourseMaterials = async () => {
+      try {
+        const response = await axios.get(
+            `${backendUrl}/api/courses/${courseId}/materials`, {
+              withCredentials: true,
+              headers: {
+                'Content-Type': 'application/json',
+                "Access-Control-Allow-Origin": "*"
+              }}
+        );
+
+        if(response.data.length > 0){
+          setCourseMaterials(response.data);
+          setErrorMessage('');
+        } else {
+          setErrorMessage('Currently no lecture materials are uploaded at the moment!');
+        }
+      } catch (error) {
+        console.error('Error fetching course materials:', error);
+        setErrorMessage(error.response?.data?.message || 'An unexpected error occurred while fetching course materials.');
+      }
+    };
+
+    fetchCourseMaterials();
+  }, [courseId, backendUrl]);
 
   return (
-    <div className="dashboard">
-      <div className="header">
-        <button>Student Home</button> {/* Changed text to match screenshot */}
-        <div className="right-menu">
-          <button>View profile</button>
-          <button>Logout</button>
-        </div>
-      </div>
-      <div className="content">
-        <div className="welcome">
-          <h2>Welcome {studentName}! Below are the Course that you have enrolled in:</h2> {/* Text updated to match screenshot */}
-        </div>
-        <div className="courses">
-          {courses.map((course) => (
-            <div key={course.id} className="course">
-              <h3>{course.name}</h3> {/* Removed class name to simplify, adjust if needed */}
-              <p>{course.professor}</p> {/* Added professor name */}
-              <div className="material-list">
-                {course.materials.map((material, index) => (
-                  <div key={index} className="material">
-                    <span>{material}</span>
-                    <button>Download</button>
+      <div className="coursehome">
+        <div className="content">
+          <div className="welcome">
+            <h2>Your selected course comes with the following list of course materials.</h2>
+          </div>
+          {errorMessage &&  <Alert severity="error" variant="filled">{errorMessage}</Alert>}
+          {!errorMessage && courseMaterials.length > 0 && (
+              <div className="courses">
+                <div className="course">
+                  <div className="material-list">
+                    {courseMaterials.map((material, index) => (
+                        <div key={index} className="material">
+                          <span>{material.file_name}</span>
+                          <Button variant="contained" style={{ backgroundColor: 'success' }}>
+                            View Material
+                          </Button>
+                        </div>
+                    ))}
                   </div>
-                ))}
+                </div>
               </div>
-            </div>
-          ))}
+          )}
         </div>
       </div>
-      <ChatBot
-      steps={[
-        {
-          id: '1',
-          message: 'What is your name?',
-          trigger: '2',
-        },
-        {
-          id: '2',
-          user: true,
-          trigger: '3',
-        },
-        {
-          id: '3',
-          message: 'Hi {previousValue}, nice to meet you!',
-          end: true,
-        },
-      ]}
-    />
-    </div>
-    
   );
 };
 
