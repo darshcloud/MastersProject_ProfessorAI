@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import './student.css';
 import axios from 'axios';
+import Alert from '@mui/material/Alert';
 
 const Student = () => {
   const { currentUser } = useAuth();
@@ -24,8 +25,12 @@ const Student = () => {
               }}
         );
 
-        setCourses(response.data);
-        setErrorMessage('');
+        if(response.data.length > 0){
+          setCourses(response.data);
+          setErrorMessage('');
+        } else {
+          setErrorMessage('You are not enrolled in any courses at the moment!');
+        }
       } catch (error) {
         setErrorMessage(error.response?.data?.message || 'An unexpected error occurred while retrieving the courses.');
       }
@@ -36,12 +41,12 @@ const Student = () => {
 
 
   return (
-      <div className="dashboard">
+      <div className="home">
         <div className="content">
           <div className="welcome">
             <h2>Welcome {studentName}!<br/> Exciting Learning Ahead! Here is your list of enrolled courses.</h2>
           </div>
-          {errorMessage && <div className="error-message">{errorMessage}</div>}
+          {errorMessage &&  <Alert severity="error" variant="filled">{errorMessage}</Alert>}
           <div className="courses">
             {courses.map((course) => (
                 <div key={course.course_id} className="course">
