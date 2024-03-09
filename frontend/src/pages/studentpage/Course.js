@@ -1,20 +1,18 @@
 import React from 'react';
-import './course.css'; // Your CSS file for styling
-import ChatBot from 'react-simple-chatbot';
+import './course.css';
 const Course = () => {
   const courses = [
     { id: 1, name: 'Course-1', professor: 'Professor Name 1', materials: ['PDF 1', 'PDF 2', 'PDF 3'] },
   ];
 
-  const studentName = "Student Name"; // Replace with actual data source
+  const studentName = "Student Name";
 
   return (
     <div className="dashboard">
       <div className="header">
-        <button>Student Home</button> {/* Changed text to match screenshot */}
+        <button>Student Home</button>
         <div className="right-menu">
           <button>View profile</button>
-          <button>Logout</button>
         </div>
       </div>
       <div className="content">
@@ -24,8 +22,8 @@ const Course = () => {
         <div className="courses">
           {courses.map((course) => (
             <div key={course.id} className="course">
-              <h3>{course.name}</h3> {/* Removed class name to simplify, adjust if needed */}
-              <p>{course.professor}</p> {/* Added professor name */}
+              <h3>{course.name}</h3>
+              <p>{course.professor}</p>
               <div className="material-list">
                 {course.materials.map((material, index) => (
                   <div key={index} className="material">
@@ -38,25 +36,7 @@ const Course = () => {
           ))}
         </div>
       </div>
-      <ChatBot
-      steps={[
-        {
-          id: '1',
-          message: 'What is your name?',
-          trigger: '2',
-        },
-        {
-          id: '2',
-          user: true,
-          trigger: '3',
-        },
-        {
-          id: '3',
-          message: 'Hi {previousValue}, nice to meet you!',
-          end: true,
-        },
-      ]}
-    />
+      {/* chatbot comes in this page */}
     </div>
     
   );

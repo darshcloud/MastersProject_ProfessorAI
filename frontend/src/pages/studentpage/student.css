@@ -18,7 +18,8 @@ code {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%; /* Ensures full width */
+    width: 100%;
+    align-self: center;
 }
 
 /* Header styling */
