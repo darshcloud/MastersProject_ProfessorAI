@@ -11,7 +11,7 @@ const Student = () => {
   const studentId = currentUser?.student_id;
   const studentName = currentUser?.first_name || "Student";
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
-
+  const colors = ['#007bff','#FF7F50','#008080'];
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -48,9 +48,9 @@ const Student = () => {
           </div>
           {errorMessage &&  <Alert severity="error" variant="filled">{errorMessage}</Alert>}
           <div className="courses">
-            {courses.map((course) => (
+            {courses.map((course, index) => (
                 <div key={course.course_id} className="course">
-                  <h3>{course.course_code}</h3>
+                  <h3 style={{ backgroundColor: colors[index % colors.length] }}>{course.course_code}</h3>
                   <p>Course Name: {course.course_name}</p>
                 </div>
             ))}
