@@ -5,19 +5,12 @@ const Course = () => {
     { id: 1, name: 'Course-1', professor: 'Professor Name 1', materials: ['PDF 1', 'PDF 2', 'PDF 3'] },
   ];
 
-  const studentName = "Student Name";
 
   return (
     <div className="dashboard">
-      <div className="header">
-        <button>Student Home</button>
-        <div className="right-menu">
-          <button>View profile</button>
-        </div>
-      </div>
       <div className="content">
         <div className="welcome">
-          <h2>Welcome {studentName}! Below are the Course that you have enrolled in:</h2> {/* Text updated to match screenshot */}
+          <h2>Your selected course comes with the following list of course materials.</h2> {/* Text updated to match screenshot */}
         </div>
         <div className="courses">
           {courses.map((course) => (
@@ -28,7 +21,7 @@ const Course = () => {
                 {course.materials.map((material, index) => (
                   <div key={index} className="material">
                     <span>{material}</span>
-                    <button>Download</button>
+                    <button>View Material</button>
                   </div>
                 ))}
               </div>
@@ -36,7 +29,6 @@ const Course = () => {
           ))}
         </div>
       </div>
-      {/* chatbot comes in this page */}
     </div>
     
   );
