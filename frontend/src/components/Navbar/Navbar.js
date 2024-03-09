@@ -1,100 +1,123 @@
-import React, {useState, useEffect} from 'react'
-import { Nav, 
-    NavbarContainer, 
-    NavLogo, 
-    NavIcon, 
-    HamburgerIcon,
-    NavMenu,
-    NavItem,
-    NavLinks,
-    NavItemBtn,
-    NavBtnLink
- } from './Navbar.elements'
+import React, { useState, useEffect } from 'react';
+import { useAuth } from '../../context/AuthContext'; // Adjust the import path as necessary
+import { Nav, NavbarContainer, NavLogo, NavIcon, HamburgerIcon, NavMenu, NavItem, NavLinks, NavItemBtn, NavBtnLink } from './Navbar.elements';
 import { FaTimes, FaBars } from 'react-icons/fa';
-import { IconContext } from 'react-icons/lib'
+import { IconContext } from 'react-icons/lib';
 import { Button } from '../../globalStyles';
 
-
 function Navbar() {
+    const { isAuthenticated, isProfessor, isStudent, logout } = useAuth(); 
 
     const [click, setClick] = useState(false);
     const [button, setButton] = useState(true);
 
-    const [homeClick, setHomeClick] = useState(false);
-    const [aboutusClick, setAboutusClick] = useState(false);
-
-    const handleHomeClick = () => {
-        setHomeClick(true);
-        setAboutusClick(false);
-    }
-    const handleAboutusClick = () => {
-        setHomeClick(false);
-        setAboutusClick(true);
-    }
-
-    const handleClick = () =>  setClick(!click);
-    
+    const handleClick = () => setClick(!click);
     const closeMobileMenu = () => setClick(false);
 
     const showButton = () => {
-        // so if the screensize is <= 960px then set button state to false
-        if(window.innerwidth <= 960) {
-            setButton(false)
+        if (window.innerWidth <= 960) {
+            setButton(false);
         } else {
-            setButton(true)
+            setButton(true);
         }
-    }
+    };
 
     useEffect(() => {
         showButton();
-    }, [])
+        // Cleanup event listener
+        const handleResize = () => showButton();
+        window.addEventListener('resize', handleResize);
+        
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
-    window.addEventListener('resize', showButton);
+    // Function to handle sign out
+    const handleSignOut = (e) => {
+        e.preventDefault();
+        logout(); // This function should handle the sign out logic.
+        closeMobileMenu();
+    };
 
     return (
         <>
-        <IconContext.Provider value={{ color: '#fff' }}>
-            <Nav>
-                <NavbarContainer>
-                    <NavLogo to='/'> 
-                        <NavIcon />
-                                ProfessorAI
-                    </NavLogo>
-                    <HamburgerIcon onClick={handleClick}>
-                        {click ? <FaTimes /> : <FaBars />}
-                    </HamburgerIcon>
-                    <NavMenu onClick={handleClick} click={click} >
-                        <NavItem onClick={handleHomeClick} homeClick={homeClick}>
-                            <NavLinks to='/' onClick={closeMobileMenu}>
-                                Home
-                            </NavLinks>
-                        </NavItem>
-                    
-                    
-                        <NavItem onClick={handleAboutusClick} aboutusClick={aboutusClick}>
-                            <NavLinks to='/About' onClick={closeMobileMenu}>
-                                About us
-                            </NavLinks>
-                        </NavItem>
+            <IconContext.Provider value={{ color: '#fff' }}>
+                <Nav>
+                    <NavbarContainer>
+                        <NavLogo to='/'>
+                            <NavIcon />
+                            ProfessorAI
+                        </NavLogo>
+                        <HamburgerIcon onClick={handleClick}>
+                            {click ? <FaTimes /> : <FaBars />}
+                        </HamburgerIcon>
+                        <NavMenu onClick={handleClick} click={click}>
 
-                        <NavItemBtn >
-                            {button ? (
-                                <NavBtnLink to='/SignIn'>
-                                    <Button primary>SIGN IN</Button>
-                                </NavBtnLink>
-                            ) : (
-                                <NavBtnLink to='/SignIn'>
-                                    <Button onClick={closeMobileMenu} fontBig primary>SIGN UP</Button>
-                                </NavBtnLink>
+                            {/* Only show Home and About Us links when not authenticated */}
+                            {!isAuthenticated && (
+                                <>
+                                    <NavItem>
+                                        <NavLinks to='/' onClick={closeMobileMenu}>
+                                            Home
+                                        </NavLinks>
+                                    </NavItem>
+                                    <NavItem>
+                                        <NavLinks to='/About' onClick={closeMobileMenu}>
+                                            About Us
+                                        </NavLinks>
+                                    </NavItem>
+                                </>
                             )}
-                            
-                        </NavItemBtn>
-                    </NavMenu>
-                </NavbarContainer>
-            </Nav>
-        </IconContext.Provider>    
+
+                            {/* Conditional Links based on user role */}
+                            {isAuthenticated && isStudent && (
+                                <>
+                                    <NavItem>
+                                        <NavLinks to='/studentHome' onClick={closeMobileMenu}>Student Home</NavLinks>
+                                    </NavItem>
+                                    <NavItem>
+                                        <NavLinks to='/profile' onClick={closeMobileMenu}>Profile</NavLinks>
+                                    </NavItem>
+                                </>
+                            )}
+                            {isAuthenticated && isProfessor && (
+                                <>
+                                    <NavItem>
+                                        <NavLinks to='/professorHome' onClick={closeMobileMenu}>Professor Home</NavLinks>
+                                    </NavItem>
+                                    <NavItem>
+                                        <NavLinks to='/profile' onClick={closeMobileMenu}>Profile</NavLinks>
+                                    </NavItem>
+                                </>
+                            )}
+
+                            {/* Toggle between SIGN IN and SIGN OUT based on isAuthenticated */}
+                            {isAuthenticated ? (
+                                <NavItemBtn>
+                                    {button ? (
+                                        <Button primary onClick={handleSignOut}>SIGN OUT</Button>
+                                    ) : (
+                                        <Button onClick={handleSignOut} fontBig primary>SIGN OUT</Button>
+                                    )}
+                                </NavItemBtn>
+                            ) : (
+                                <NavItemBtn>
+                                    {button ? (
+                                        <NavBtnLink to='/SignIn'>
+                                            <Button primary>SIGN IN</Button>
+                                        </NavBtnLink>
+                                    ) : (
+                                        <NavBtnLink to='/SignIn'>
+                                            <Button onClick={closeMobileMenu} fontBig primary>SIGN IN</Button>
+                                        </NavBtnLink>
+                                    )}
+                                </NavItemBtn>
+                            )}
+                        </NavMenu>
+                    </NavbarContainer>
+                </Nav>
+            </IconContext.Provider>
         </>
-    )
+    );
 }
 
-export default Navbar
+export default Navbar;

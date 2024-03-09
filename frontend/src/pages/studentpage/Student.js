@@ -1,36 +1,55 @@
-import React from 'react';
-import './student.css'; // Your CSS file for styling
-
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import './student.css';
 
 const Student = () => {
-  const courses = [
-    { id: 1, name: 'Course-1', professor: 'Professor Name 1'},
-    { id: 2, name: 'Course-2', professor: 'Professor Name 2'},
-    { id: 3, name: 'Course-3', professor: 'Professor Name 3'}
-  ];
+  const { currentUser } = useAuth();
+  const history = useHistory();
+  const [courses, setCourses] = useState([]); // State to hold courses data
 
-  const studentName = "Student Name"; // Replace with actual data source
+  const studentName = currentUser?.first_name || "Student";
+  const studentId = currentUser?.student_id; 
 
+  useEffect(() => {
+    const fetchCourses = async () => {
+      if (studentId) { 
+        try {
+          const response = await fetch(`http://localhost:5000/api/student/${studentId}/courses`, {
+            method: 'GET',
+            credentials: 'include', // Necessary for cookies-based auth
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+          if (response.ok) {
+            const data = await response.json();
+            setCourses(data); 
+            console.log(data)
+          } else {
+            console.error('Failed to fetch courses');
+          }
+        } catch (error) {
+          console.error('Error fetching courses:', error);
+        }
+      }
+    };
+
+    fetchCourses();
+  }, [studentId]);
   return (
     <div className="dashboard">
-      <div className="header">
-        <button>Student Home</button> {/* Changed text to match screenshot */}
-        <div className="right-menu">
-          <button>View profile</button>
-          <button>Logout</button>
-        </div>
-      </div>
       <div className="content">
         <div className="welcome">
-          <h2>Welcome {studentName}! Below are the Courses that you have enrolled in:</h2> {/* Text updated to match screenshot */}
+          <h2>Welcome {studentName}!</h2>
         </div>
         <div className="courses">
-          {courses.map((course) => (
-            <div key={course.id} className="course">
-              <h3>{course.name}</h3> {/* Removed class name to simplify, adjust if needed */}
-              <p>Professor: {course.professor}</p> {/* Added professor name */}
+          {courses.length > 0 ? courses.map((course) => (
+            <div key={course.course_code} className="course">
+              <h3>{course.course_name}</h3>
+              <p>Course code: {course.course_code}</p>
             </div>
-          ))}
+          )) : <p>No courses enrolled.</p>}
         </div>
       </div>
     </div>

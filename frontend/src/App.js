@@ -8,11 +8,14 @@ import SignIn from './pages/SignIn/SignIn';
 import ScrollToTop from './components/ScrollToTop';
 import Student from './pages/studentpage/Student';
 import Course from './pages/studentpage/Course';
+import Professor from './pages/Professor/Professor';
 import StudentDashboard from './pages/studentpage/StudentDashboard';
+import ProtectedRoute from './components/ProtectedRoute';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
-    
+    <AuthProvider>
       <Router>
           <GlobalStyles />
           <ScrollToTop />
@@ -21,13 +24,16 @@ function App() {
             <Route path='/' exact component={Home} />
             <Route path='/About' component={About} />
             <Route path='/SignIn' component={SignIn} />
-            <Route path='/student' component={Student} />
-            <Route path='/viewcourses' component={Course} />
+            <ProtectedRoute path='/student' component={Student} allowedRoles={['student']} />
+            <ProtectedRoute path='/viewcourses' component={Course} allowedRoles={['student']} />
+            <ProtectedRoute path='/studenthome' component={Student} allowedRoles={['student']} />
             <Route path='/dashboard' component={StudentDashboard} />
+            <ProtectedRoute path="/professor" component={Professor} allowedRoles={['professor']}/>
           </Switch>
           <Footer />
       </Router>
-        
+      </AuthProvider>
+      
     
   );
 }
