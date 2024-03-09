@@ -1,61 +1,83 @@
 const express = require('express');
+const cors = require('cors');
+const passport = require('passport');
+const session = require('express-session');
 const { Sequelize } = require('sequelize');
+const passportConfig = require('./src/config/passport');
+require('./src/config/passport');
 const dotenv = require('dotenv');
-const {OAuth2Client} = require('google-auth-library');
+const { isLoggedIn } = require('./src/config/authMiddleware');
 const app = express();
+app.use(cors({
+    origin: 'http://localhost:3000', // Allow requests from your frontend origin
+    credentials: true // Allow cookies to be sent across origins
+  }));
 
-const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-const REDIRECT_URI = 'http://localhost:3000/auth/google/callback';
-const oAuth2Client = new OAuth2Client(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
+dotenv.config();
+app.use(session({
+    secret: process.env.secret,
+    resave: false,
+    saveUninitialized: false
+  }));
+//  
+app.use(passport.initialize());
+app.use(passport.session()); 
+app.get('/api/auth/status', isLoggedIn, (req, res) => {
+    // Initialize the user object to return
+    let userResponse = {
+        user_role: req.user.user_role,
+        first_name: req.user.first_name,
+    };
 
-// Generate a URL that asks permissions for the user's email and profile
-const SCOPES = ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email'];
+    if (req.user.user_role === 'student') {
+        userResponse.student_id = req.user.student_id; 
+    } else if (req.user.user_role === 'professor') {
+        userResponse.professor_id = req.user.professor_id; 
+    }
 
-app.get('/auth/google', (req, res) => {
-    // Generate the Google Authentication URL
-    const authUrl = oAuth2Client.generateAuthUrl({
-        access_type: 'offline',
-        scope: SCOPES,
+    // User is authenticated, return user info and authentication status
+    res.json({
+        isAuthenticated: true,
+        user: userResponse,
     });
-    res.redirect(authUrl);
 });
 
-const {google} = require('googleapis');
 
-app.get('/auth/google/callback', async (req, res) => {
-    const {code} = req.query;
-    if (code) {
-        try {
-            // Exchange the authorization code for tokens
-            const {tokens} = await oAuth2Client.getToken(code);
-            oAuth2Client.setCredentials(tokens);
-
-            // Create a Google People API client
-            const peopleService = google.people({version: 'v1', auth: oAuth2Client});
-
-            // Retrieve user profile information
-            const profile = await peopleService.people.get({
-                resourceName: 'people/me',
-                personFields: 'names,emailAddresses,photos',
-            });
-
-            // Extract the profile information
-            const userInfo = {
-                name: profile.data.names?.[0]?.displayName,
-                email: profile.data.emailAddresses?.[0]?.value,
-                photo: profile.data.photos?.[0]?.url,
-            };
-
-            // Respond with the user info in JSON format
-            res.json(userInfo);
-        } catch (error) {
-            console.error('Error retrieving user info', error);
-            res.status(500).json({ error: 'Failed to retrieve user profile' });
+app.get('/google',
+    passport.authenticate('google', {
+            scope:
+                ['email', 'profile']
         }
-    } else {
-        res.status(400).json({ error: 'Invalid request: no code provided' });
+));
+
+// Call back route
+// Backend: /auth/google/callback
+app.get('/auth/google/callback',
+    passport.authenticate('google', { failureRedirect: 'http://localhost:3000' }),
+    function (req, res) {
+        if (req.user.user_role === 'professor') {
+            res.redirect('http://localhost:3000/professor');
+        } else if (req.user.user_role === 'student') {
+            res.redirect('http://localhost:3000/student');
+        } else {
+            res.redirect('http://localhost:3000');
+        }
     }
+);
+
+// Route that logs out the authenticated user  
+app.get("/logout", (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.log('Error while destroying session:', err);
+            return res.status(500).json({ message: 'Error destroying session' });
+        }
+        req.logout(() => {
+            console.log('You are logged out');
+            // Instead of redirecting, send a simple JSON response
+            res.json({ success: true, message: 'Logged out successfully' });
+        });
+    });
 });
 
 
@@ -77,6 +99,7 @@ const sequelize = new Sequelize({
 sequelize.authenticate()
     .then(() => {
         console.log('Connected to MySQL database');
+        passportConfig.setSequelize(sequelize);
     })
     .catch(err => {
         console.error('Unable to connect to the database:', err);
@@ -91,8 +114,9 @@ const apiRoutes = require('./src/routes/api');
 // Use routes
 app.use('/api', apiRoutes(sequelize));
 
+
 // Start the server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
