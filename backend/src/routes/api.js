@@ -5,6 +5,7 @@ const multer = require('multer');
 const professorCtrl = require('../controllers/professor');
 const adminCtrl= require('../controllers/admin');
 const courseMaterialCtrl = require('../controllers/course_material');
+const courseCtrl = require('../controllers/course');
 const studentCtrl = require('../controllers/student');
 const upload = multer();
 const { isLoggedIn } = require('../config/authMiddleware');
@@ -15,6 +16,7 @@ router.get('/professor/profile/:professor_id',isLoggedIn, professorCtrl.getProfe
 router.put('/professor/profile/update/:professor_id',isLoggedIn, professorCtrl.updateProfileInformation);
 router.get('/professor/students/list/:course_id',isLoggedIn, professorCtrl.getEnrolledStudentDetails);
 router.get('/professor/students/search/:course_id',isLoggedIn, professorCtrl.searchStudents);
+router.get('/professor/:professor_id/courses', isLoggedIn, professorCtrl.getProfessorCourseDetails);
 router.post('/admin/register',adminCtrl.requireAdmin, adminCtrl.registerUser);
 router.post('/admin/courses', adminCtrl.addNewCourse)
 router.put('/admin/course/:course_id/assignProfessor',adminCtrl.assignProfessor)
@@ -31,6 +33,7 @@ router.get('/courses/:courseId/materials/:materialId/view/',isLoggedIn, courseMa
 router.get('/student/profile/:student_id',isLoggedIn, studentCtrl.getStudentProfileDetails);
 router.put('/student/profile/update/:student_id',isLoggedIn, studentCtrl.updateStudentProfileInformation);
 router.get('/student/:student_id/courses',isLoggedIn, studentCtrl.getEnrolledCoursesDetails);
+router.get('/courses/:courseId', isLoggedIn, courseCtrl.getCourseById);
 router.post('/admin/login', adminCtrl.adminLogin);
 
 module.exports = (sequelize) => {
@@ -39,6 +42,7 @@ module.exports = (sequelize) => {
     professorCtrl.setSequelize(sequelize);
     courseMaterialCtrl.setSequelize(sequelize);
     studentCtrl.setSequelize(sequelize);
+    courseCtrl.setSequelize(sequelize)
     return router;
 };
 

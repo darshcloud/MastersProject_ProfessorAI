@@ -9,12 +9,13 @@ export function useAuth() {
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   // Function to check authentication status
   const checkAuthStatus = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch('http://localhost:5000/api/auth/status', { credentials: 'include' });
+      const response = await fetch(`${backendUrl}/api/auth/status`, { credentials: 'include' });
       const data = await response.json();
       if (data.isAuthenticated) {
         setCurrentUser(data.user);
@@ -23,7 +24,7 @@ export const AuthProvider = ({ children }) => {
         setCurrentUser(null);
       }
     } catch (error) {
-      console.error('Error checking auth status:', error);
+      console.log(error);
       setCurrentUser(null);
     } finally {
       setIsLoading(false);
@@ -37,7 +38,7 @@ export const AuthProvider = ({ children }) => {
   // Logout function
   const logout = async () => {
     try {
-      await fetch('http://localhost:5000/logout', { credentials: 'include' }); // Adjust the endpoint as needed
+      await fetch(`${backendUrl}/logout`, { credentials: 'include' }); // Adjust the endpoint as needed
       setCurrentUser(null); 
      
     } catch (error) {
