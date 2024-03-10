@@ -48,7 +48,6 @@ async function addMaterialForCourse(req, res) {
         return res.status(400).json({ message: 'Unsupported file type' });
     }
 
-
     const file = req.file; // Assuming you're using multer or similar middleware for file upload
     const material = await getCourseMaterial().findOne({ where: { file_name: file.originalname, course_id: courseId } });
     if (material) {

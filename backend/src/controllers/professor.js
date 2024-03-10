@@ -61,6 +61,37 @@ async function getProfessorProfileDetails(req, res) {
     }
 }
 
+async function getProfessorCourseDetails(req, res) {
+    try {
+        // Check if Sequelize instance is available
+        if (!sequelizeInstance) {
+            return res.status(500).json({ message: "Sequelize instance is not set." });
+        }
+
+        const Professor = require('../models/Professor')(sequelizeInstance);
+        const Course = require('../models/Course')(sequelizeInstance);
+
+        // Fetch the professor by professorId including associated courses
+        const professorId = req.params.professor_id;
+        const professor = await Professor.findByPk(professorId, {
+            include: [{
+                model: Course,
+                attributes: ['course_code', 'course_name', 'course_id']
+            }],
+        });
+
+        if (!professor) {
+            return res.status(404).json({ message: "Profile not found." });
+        }
+
+        // Send the professor profile as a response
+        res.json(professor.Courses);
+    } catch (error) {
+        // If an error occurs, send an error response
+        res.status(500).json({ message: error.message });
+    }
+}
+
 //Controller Function to update profile information
 async function updateProfileInformation(req, res) {
     try {
@@ -206,6 +237,7 @@ module.exports = {
     setSequelize,
     getAllProfessors,
     getProfessorProfileDetails,
+    getProfessorCourseDetails,
     updateProfileInformation,
     getEnrolledStudentDetails,
     searchStudents
