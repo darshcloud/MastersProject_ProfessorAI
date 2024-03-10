@@ -13,7 +13,6 @@ code {
       monospace;
 }
 
-/* Dashboard styling */
 .home {
     min-height: 550px;
     display: flex;
@@ -23,7 +22,6 @@ code {
     align-self: center;
 }
 
-/* Header styling */
 .header {
     background-color: #f4f4f4;
     padding: 20px;

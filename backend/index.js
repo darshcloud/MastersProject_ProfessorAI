@@ -9,7 +9,7 @@ const dotenv = require('dotenv');
 const { isLoggedIn } = require('./src/config/authMiddleware');
 const app = express();
 app.use(cors({
-    origin: 'http://localhost:3000', // Allow requests from your frontend origin
+    origin: 'http://localhost:3000', // Need to Replace with the URL of frontend of our custom domain later
     credentials: true // Allow cookies to be sent across origins
   }));
 

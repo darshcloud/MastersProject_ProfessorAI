@@ -7,6 +7,7 @@ import { homeObjOne } from './Data';
 function SignIn() {
   const { isAuthenticated, isProfessor, isStudent, isLoading } = useAuth(); // Destructure needed values from useAuth
   const history = useHistory(); // Initialize useHistory hook for redirection
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
     // Redirect user based on their role if already authenticated
@@ -22,7 +23,7 @@ function SignIn() {
 
   const handleSignIn = () => {
     console.log("Sign in button clicked");
-    window.location.href = 'http://localhost:5000/google'; // Update with your backend's auth URL
+    window.location.href = `${backendUrl}/google`; // Update with your backend's auth URL
   };
 
   const signInObj = {

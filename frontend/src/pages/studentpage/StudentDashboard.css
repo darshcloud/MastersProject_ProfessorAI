@@ -13,13 +13,12 @@ code {
 }
 
 .dashboard {
+  min-height: 550px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Ensures all items in the dashboard are centered */
-  gap: 20px;
-  padding: 20px;
-  max-width: 1200px; /* Control the max width of your dashboard */
-  margin: 20px auto; /* Center the dashboard horizontally */
+  align-items: center;
+  width: 100%;
+  align-self: center;
 }
 
 .header {
@@ -117,4 +116,13 @@ button {
   flex: 1; /* Allows each content to grow equally */
   padding: 20px; /* Match .content padding or set as needed */
   /* Add any other styles from .content that you want to apply */
+}
+
+.buttonpanel {
+  display: flex;
+  justify-content: center;
+}
+
+.buttonpanel button {
+  margin: 0 40px;
 }
