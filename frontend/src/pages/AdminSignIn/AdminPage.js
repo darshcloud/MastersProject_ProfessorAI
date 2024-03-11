@@ -34,11 +34,17 @@ function AdminPage() {
             <Typography variant="h6" gutterBottom>
               Professor Management
             </Typography>
-            <Button variant="contained" color="primary" style={{ marginRight: '1rem' }} component={Link} to="/add-course">
-              Add Course
-            </Button>
-            <Button variant="contained" color="primary" style={{ marginRight: '1rem' }} component={Link} to="/add-course">
-              Add Course
+            <Button
+            variant="contained"
+            color="primary"
+            style={{ marginRight: '1rem' }}
+            component={Link}
+            to={{
+                pathname: "/register",
+                state: { isAdmin: true }
+            }}
+            >
+            Register
             </Button>
             {/* Additional professor management functionality as needed */}
           </Paper>
@@ -49,11 +55,17 @@ function AdminPage() {
             <Typography variant="h6" gutterBottom>
               Student Management
             </Typography>
-            <Button variant="contained" color="primary" style={{ marginRight: '1rem' }} component={Link} to="/add-course">
-              Add Course
-            </Button>
-            <Button variant="contained" color="primary" style={{ marginRight: '1rem' }} component={Link} to="/add-course">
-              Add Course
+            <Button
+            variant="contained"
+            color="primary"
+            style={{ marginRight: '1rem' }}
+            component={Link}
+            to={{
+                pathname: "/register",
+                state: { isAdmin: true }
+            }}
+            >
+            Register
             </Button>
           </Paper>
         </Grid>
