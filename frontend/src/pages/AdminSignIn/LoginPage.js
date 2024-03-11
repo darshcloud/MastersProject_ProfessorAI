@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
+
 import { TextField, Button, Typography, Container, Paper } from '@mui/material';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import AdminPage from './AdminPage'; // Ensure this path is correct
+import { useHistory } from 'react-router-dom';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loginSuccess, setLoginSuccess] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const history = useHistory();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -22,6 +27,8 @@ function LoginPage() {
       
       Cookies.set('token', response.data.token, { expires: 7 }); // Save the token in a cookie
       setLoginSuccess(true); // Update loginSuccess state
+      setIsAdmin(true); 
+      setIsAuthenticated(true);// Set isAdmin based on the role returned from the backend
 
     } catch (error) {
       if (error.response) {
@@ -34,9 +41,16 @@ function LoginPage() {
     }
   };
 
-  if (loginSuccess) {
-    return <AdminPage />;
-  }
+  useEffect(() => {
+    if (loginSuccess) {
+      if (isAdmin && isAuthenticated) {
+        history.push('/admin/dashboard', { isAdmin: true }); // Redirect to admin dashboard
+      } else {
+        // Redirect non-admin users to a different page, or display an error, etc.
+        setError('Not authorized as admin.');
+      }
+    }
+  }, [loginSuccess, isAdmin, history, isAuthenticated]);
 
   return (
     <Container component="main" maxWidth="xs">
