@@ -4,8 +4,13 @@ import { Nav, NavbarContainer, NavLogo, NavIcon, HamburgerIcon, NavMenu, NavItem
 import { FaTimes, FaBars } from 'react-icons/fa';
 import { IconContext } from 'react-icons/lib';
 import { Button } from '../../globalStyles';
+import { useLocation } from 'react-router-dom';
+
+
 
 function Navbar() {
+    const location = useLocation();
+    const { isAdmin } = location.state || {}; 
     const { isAuthenticated, isProfessor, isStudent, logout } = useAuth(); 
 
     const [click, setClick] = useState(false);
@@ -51,9 +56,25 @@ function Navbar() {
                             {click ? <FaTimes /> : <FaBars />}
                         </HamburgerIcon>
                         <NavMenu onClick={handleClick} click={click}>
+                            {isAdmin && (
+                                <>
+                                    <NavItem>
+                                    <NavLinks 
+                                        to={{
+                                            pathname: '/admin/dashboard',
+                                            state: { isAdmin: true }
+                                        }} 
+                                        onClick={closeMobileMenu}
+                                        >
+                                        Admin Home
+                                    </NavLinks>
+                                    </NavItem>
+
+                                </>
+                            )}
 
                             {/* Only show Home and About Us links when not authenticated */}
-                            {!isAuthenticated && (
+                            {!isAuthenticated && !isAdmin&&(
                                 <>
                                     <NavItem>
                                         <NavLinks to='/' onClick={closeMobileMenu}>
@@ -90,8 +111,9 @@ function Navbar() {
                                 </>
                             )}
 
+
                             {/* Toggle between SIGN IN and SIGN OUT based on isAuthenticated */}
-                            {isAuthenticated ? (
+                            {isAuthenticated || isAdmin? (
                                 <NavItemBtn>
                                     {button ? (
                                         <Button primary onClick={handleSignOut}>SIGN OUT</Button>
