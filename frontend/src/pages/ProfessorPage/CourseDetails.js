@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import ProfessorNav from "./ProfessorNav";
 import MaterialTable from "./MaterialTable";
 import {Typography, Button, Grid, Alert} from '@mui/material';
 
@@ -25,7 +24,7 @@ const CourseDetails = () => {
         };
 
         fetchCourseDetails();
-    }, [courseId]);
+    }, [courseId, backendUrl]);
 
     useEffect(() => {
         const fetchMaterials = async () => {
@@ -41,7 +40,7 @@ const CourseDetails = () => {
         };
 
         fetchMaterials();
-    }, [courseId]);
+    }, [courseId, backendUrl]);
 
     // Function to format date without seconds
     const formatDateTime = (dateTimeString) => {
@@ -71,8 +70,9 @@ const CourseDetails = () => {
 
     return (
         <div className="dashboard">
+            <br/>
             <Typography variant="h4" gutterBottom>
-                Course: {courseName}
+                Course Name: {courseName}
             </Typography>
             {error && <Alert severity="error" onClose={() => {setError("")}}>{error}</Alert>}
             <br/>

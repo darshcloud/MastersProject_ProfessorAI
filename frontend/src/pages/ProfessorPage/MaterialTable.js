@@ -32,8 +32,8 @@ const MaterialTable = ({ materials, formatDateTime, handleDelete, backendUrl, co
                                     </Grid>
                                     <Grid item>
                                         <a href={`${backendUrl}/api/courses/${courseId}/materials/${material.material_id}/view`} download style={{ textDecoration: 'none' }}>
-                                            <Button variant="contained" color="primary">
-                                                Download
+                                            <Button variant="contained" color="success">
+                                                View Material
                                             </Button>
                                         </a>
                                     </Grid>

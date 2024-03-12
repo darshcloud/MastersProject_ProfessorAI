@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Grid, Alert, Typography} from '@mui/material';
 import { styled } from '@mui/material/styles';
-import ProfessorNav from "./ProfessorNav";
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -39,7 +38,7 @@ const MaterialUpload = () => {
         };
 
         fetchCourseDetails();
-    }, [courseId]);
+    }, [courseId, backendUrl]);
 
     // Function to handle file change
     const handleFileChange = (event) => {
@@ -101,11 +100,12 @@ const MaterialUpload = () => {
 
     return (
         <div className="dashboard">
+            <br/>
             <Typography variant="h4" gutterBottom>
-                Course: {courseName}
+                Course Name: {courseName}
             </Typography>
-            {error && <Alert severity="error" onClose={() => {setError("")}}>{error}</Alert>}
-            {successMessage && <Alert severity="success" onClose={() => {setSuccessMessage("")}}>{successMessage}</Alert>}
+            {error && <Alert variant="filled" severity="error" onClose={() => {setError("")}}>{error}</Alert>}
+            {successMessage && <Alert variant="filled" severity="success" onClose={() => {setSuccessMessage("")}}>{successMessage}</Alert>}
             <br/>
             <Grid container spacing={2} alignItems="center" justifyContent="center">
                 <Grid item xs={12}>
