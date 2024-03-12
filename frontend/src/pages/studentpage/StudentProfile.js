@@ -3,11 +3,11 @@ import axios from 'axios';
 import { TextField, Button, Grid, IconButton} from '@mui/material';
 import Alert from '@mui/material/Alert';
 import CloseIcon from '@mui/icons-material/Close';
-import './StudentDashboard.css';
+import './StudentProfile.css';
 import image from './avatar.jpg';
 import {useAuth} from "../../context/AuthContext";
 
-const StudentDashboard = () => {
+const StudentProfile = () => {
   const { currentUser } = useAuth();
   const [studentDetails, setStudentDetails] = useState({
     first_name: '',
@@ -169,4 +169,4 @@ const StudentDashboard = () => {
 };
 
 
-export default StudentDashboard;
+export default StudentProfile;
