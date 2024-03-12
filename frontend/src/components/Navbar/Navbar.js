@@ -106,7 +106,7 @@ function Navbar() {
                                         <NavLinks to='/professorHome' onClick={closeMobileMenu}>Professor Home</NavLinks>
                                     </NavItem>
                                     <NavItem>
-                                        <NavLinks to='/profile' onClick={closeMobileMenu}>Profile</NavLinks>
+                                        <NavLinks to='/profileView' onClick={closeMobileMenu}>Profile</NavLinks>
                                     </NavItem>
                                 </>
                             )}

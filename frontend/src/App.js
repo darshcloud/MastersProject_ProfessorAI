@@ -18,6 +18,7 @@ import AdminSignIn from './pages/AdminSignIn/LoginPage';
 import AdminPage from './pages/AdminSignIn/AdminPage';
 import AddCoursePage from './pages/AdminSignIn/AddCoursePage';
 import Register from './pages/AdminSignIn/Register';
+import ProfessorProfile from "./pages/ProfessorPage/ProfessorProfile";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
             <ProtectedRoute path="/Professor/Course/:courseId/upload" component={MaterialUpload} allowedRoles={['professor']}/>
             <ProtectedRoute path="/Professor/Course/:courseId" component={CourseDetails} allowedRoles={['professor']} />
             <ProtectedRoute path="/Professor" component={Professor} allowedRoles={['professor']}/>
+              <ProtectedRoute path='/profileview' component={ProfessorProfile} allowedRoles={['professor']} />
           </Switch>
           <Footer />
       </Router>
