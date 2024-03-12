@@ -38,6 +38,7 @@ function App() {
             <ProtectedRoute path='/viewcourses/:courseId' component={Course} allowedRoles={['student']} />
             <ProtectedRoute path='/studenthome' component={Student} allowedRoles={['student']} />
             <ProtectedRoute path='/viewprofile' component={StudentDashboard} allowedRoles={['student']} />
+              <ProtectedRoute path="/professorHome" component={Professor} allowedRoles={['professor']}/>
             <ProtectedRoute path="/Professor/Course/:courseId/upload" component={MaterialUpload} allowedRoles={['professor']}/>
             <ProtectedRoute path="/Professor/Course/:courseId" component={CourseDetails} allowedRoles={['professor']} />
             <ProtectedRoute path="/Professor" component={Professor} allowedRoles={['professor']}/>
