@@ -50,10 +50,11 @@ const Course = () => {
               <div className="courses">
                 <div className="course">
                   <div className="material-list">
+                    <strong>FileNames</strong>
                     {courseMaterials.map((material, index) => (
                         <div key={index} className="material">
                           <span>{material.file_name}</span>
-                          <Button variant="contained" style={{ backgroundColor: 'success' }}>
+                          <Button variant="contained" style={{backgroundColor: 'success'}}>
                             View Material
                           </Button>
                         </div>

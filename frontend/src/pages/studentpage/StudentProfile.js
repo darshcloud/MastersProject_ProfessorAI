@@ -143,26 +143,26 @@ const StudentProfile = () => {
                 </Grid>
               </Grid>
               <br/>
-              {alert.show && (
-                  <Alert
-                      variant="filled"
-                      severity={alert.type}
-                      action={
-                        <IconButton
-                            aria-label="close"
-                            color="inherit"
-                            size="small"
-                            onClick={handleCloseAlert}
-                        >
-                          <CloseIcon fontSize="inherit" />
-                        </IconButton>
-                      }
-                  >
-                    {alert.message}
-                  </Alert>
-              )}
             </Grid>
           </Grid>
+          {alert.show && (
+              <Alert
+                  variant="filled"
+                  severity={alert.type}
+                  action={
+                    <IconButton
+                        aria-label="close"
+                        color="inherit"
+                        size="small"
+                        onClick={handleCloseAlert}
+                    >
+                      <CloseIcon fontSize="inherit" />
+                    </IconButton>
+                  }
+              >
+                {alert.message}
+              </Alert>
+          )}
         </div>
       </div>
   );
