@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Grid, Tooltip } from '@mui/material';
 
-const MaterialTable = ({ materials, formatDateTime, handleDelete, backendUrl, courseId }) => {
+const MaterialTable = ({ materials, formatDateTime, handleDelete, handleViewMaterial, backendUrl, courseId }) => {
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="caption table">
@@ -26,16 +26,15 @@ const MaterialTable = ({ materials, formatDateTime, handleDelete, backendUrl, co
                             <TableCell>
                                 <Grid container spacing={2} justifyContent="flex-start">
                                     <Grid item>
-                                        <Button onClick={() => handleDelete(material.material_id)} variant="contained" color="error">
+                                        <Button onClick={() => handleDelete(material.material_id)} variant="contained"
+                                                color="error">
                                             Delete
                                         </Button>
                                     </Grid>
                                     <Grid item>
-                                        <a href={`${backendUrl}/api/courses/${courseId}/materials/${material.material_id}/view`} download style={{ textDecoration: 'none' }}>
-                                            <Button variant="contained" color="success">
-                                                View Material
-                                            </Button>
-                                        </a>
+                                        <Button onClick={() => handleViewMaterial(material.material_id, material.file_name, courseId)} variant="contained" color="success">
+                                            Select File
+                                        </Button>
                                     </Grid>
                                 </Grid>
                             </TableCell>
