@@ -13,7 +13,7 @@ code {
       monospace;
 }
 
-.home {
+.professor-home {
     min-height: 550px;
     display: flex;
     flex-direction: column;

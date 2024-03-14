@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
-import ProfessorNav from "./ProfessorNav";
 import MaterialTable from "./MaterialTable";
 import {Typography, Button, Grid, Alert} from '@mui/material';
+import ViewCourseMaterial from "./ViewCourseMaterial";
 
 const CourseDetails = () => {
     const { courseId } = useParams();
@@ -11,6 +11,7 @@ const CourseDetails = () => {
     const [error, setError] = useState(null);
     const [courseName, setCourseName] = useState('');
     const backendUrl = process.env.REACT_APP_BACKEND_URL;
+    const [selectedMaterial, setSelectedMaterial] = useState(null);
 
     useEffect(() => {
         const fetchCourseDetails = async () => {
@@ -25,7 +26,7 @@ const CourseDetails = () => {
         };
 
         fetchCourseDetails();
-    }, [courseId]);
+    }, [courseId, backendUrl]);
 
     useEffect(() => {
         const fetchMaterials = async () => {
@@ -41,7 +42,7 @@ const CourseDetails = () => {
         };
 
         fetchMaterials();
-    }, [courseId]);
+    }, [courseId, backendUrl]);
 
     // Function to format date without seconds
     const formatDateTime = (dateTimeString) => {
@@ -69,28 +70,47 @@ const CourseDetails = () => {
         }
     };
 
+    const history = useHistory();
+
+    const handleUpload = (courseId) => {
+        history.push(`/Professor/Course/${courseId}/upload`);
+    };
+
+    const handleViewMaterial = (materialId, materialName, courseId) => {
+        setSelectedMaterial({ materialId, materialName, courseId });
+    }
+
     return (
         <div className="dashboard">
+            <br/>
             <Typography variant="h4" gutterBottom>
-                Course: {courseName}
+                Course Name: {courseName}
             </Typography>
             {error && <Alert severity="error" onClose={() => {setError("")}}>{error}</Alert>}
             <br/>
             <div className="content">
                 <Grid container spacing={2}>
                     <Grid item xs={12} container justifyContent="flex-end">
-                            <Button href={`/Professor/Course/${courseId}/upload`} variant="contained" color="primary">
-                                Upload
-                            </Button>
+                        <Button onClick={() => handleUpload(courseId)} variant="contained" color="primary">
+                            Upload
+                        </Button>
                     </Grid>
                     <Grid item xs={12}>
                         <MaterialTable
                             materials={materials}
                             formatDateTime={formatDateTime}
                             handleDelete={handleDelete}
+                            handleViewMaterial={handleViewMaterial}
                             backendUrl={backendUrl}
                             courseId={courseId}
                         />
+                        {selectedMaterial && (
+                            <ViewCourseMaterial
+                                materialId={selectedMaterial.materialId}
+                                materialName={selectedMaterial.materialName}
+                                courseId={selectedMaterial.courseId}
+                            />
+                        )}
                     </Grid>
                 </Grid>
             </div>
