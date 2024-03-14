@@ -4,6 +4,7 @@ import { styled } from '@mui/material/styles';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const MaterialUpload = () => {
     const { courseId } = useParams(); // Fetch courseId from path parameters
@@ -12,6 +13,7 @@ const MaterialUpload = () => {
     const [successMessage, setSuccessMessage] = useState(null);
     const [courseName, setCourseName] = useState('');
     const backendUrl = process.env.REACT_APP_BACKEND_URL;
+    const [uploading, setUploading] = useState(false);
 
     const VisuallyHiddenInput = styled('input')({
         clip: 'rect(0 0 0 0)',
@@ -47,6 +49,7 @@ const MaterialUpload = () => {
 
     // Function to handle file upload
     const uploadFile = async () => {
+        setUploading(true);
         if (file) {
             try {
                 // Check if the file already exists
@@ -96,6 +99,7 @@ const MaterialUpload = () => {
             setError("Please select a file to upload.");
             setSuccessMessage(null);
         }
+        setUploading(false);
     };
 
     return (
@@ -121,7 +125,12 @@ const MaterialUpload = () => {
                             <VisuallyHiddenInput type="file" onChange={handleFileChange} />
                         </Button>
                         <br/>
-                        <Button variant="contained" color="primary" onClick={uploadFile}>Upload</Button>
+                        <Button variant="contained" color="primary" onClick={uploadFile} disabled={uploading}>Upload</Button>
+                        {uploading && (
+                            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+                                <CircularProgress color="secondary" />
+                            </div>
+                        )}
                     </div>
                 </Grid>
             </Grid>

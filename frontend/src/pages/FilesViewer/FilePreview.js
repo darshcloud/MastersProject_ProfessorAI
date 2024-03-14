@@ -1,6 +1,7 @@
 import React from 'react';
 import FileViewer from 'react-file-viewer';
 import DocViewer, { DocViewerRenderers } from "@cyntler/react-doc-viewer";
+import "./filepreview.css";
 
 const FilePreview = ({ fileType, filePath }) => {
     const onError = e => {
