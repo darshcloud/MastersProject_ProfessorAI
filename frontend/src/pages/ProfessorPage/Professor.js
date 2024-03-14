@@ -3,7 +3,7 @@ import './professor.css';
 import axios from 'axios';
 import Alert from '@mui/material/Alert';
 import { useHistory } from 'react-router-dom';
-import { Typography } from '@mui/material';
+import { Button,Typography } from '@mui/material';
 import {useAuth} from "../../context/AuthContext";
 
 const Professor = () => {
@@ -47,12 +47,20 @@ const Professor = () => {
     const handleCourseClick = (courseId) => {
         history.push(`/Professor/course/${courseId}`);
     };
+      const handleGetEnrolledStudents = () => {
+        history.push(`/getenrolledstudents`);
+    };
 
     return (
         <div className="professor-home">
             <div className="content">
                 <div className="welcome">
                     <Typography variant="h4">Welcome back Professor. {professorName}! </Typography><br/>
+                    <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                        <Button variant="contained" color="success" onClick={handleGetEnrolledStudents}>
+                            Check Enrolled Students
+                        </Button>
+                    </div>
                     <Typography variant="h5" align="center">Your list of courses</Typography>
                 </div>
                 <br/>
@@ -68,6 +76,7 @@ const Professor = () => {
             </div>
         </div>
     );
+    
 };
 
 export default Professor;

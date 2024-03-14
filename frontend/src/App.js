@@ -19,7 +19,7 @@ import AdminPage from './pages/AdminSignIn/AdminPage';
 import AddCoursePage from './pages/AdminSignIn/AddCoursePage';
 import Register from './pages/AdminSignIn/Register';
 import ProfessorProfile from "./pages/ProfessorPage/ProfessorProfile";
-
+import GetEnrolledStudents from './pages/ProfessorPage/GetEnrolledStudents';
 function App() {
   return (
     <AuthProvider>
@@ -39,11 +39,12 @@ function App() {
             <ProtectedRoute path='/viewcourses/:courseId' component={Course} allowedRoles={['student']} />
             <ProtectedRoute path='/studenthome' component={Student} allowedRoles={['student']} />
             <ProtectedRoute path='/viewprofile' component={StudentProfile} allowedRoles={['student']} />
-              <ProtectedRoute path="/professorHome" component={Professor} allowedRoles={['professor']}/>
+            <ProtectedRoute path="/professorHome" component={Professor} allowedRoles={['professor']}/>
             <ProtectedRoute path="/Professor/Course/:courseId/upload" component={MaterialUpload} allowedRoles={['professor']}/>
             <ProtectedRoute path="/Professor/Course/:courseId" component={CourseDetails} allowedRoles={['professor']} />
             <ProtectedRoute path="/Professor" component={Professor} allowedRoles={['professor']}/>
-              <ProtectedRoute path='/profileview' component={ProfessorProfile} allowedRoles={['professor']} />
+            <ProtectedRoute path='/profileview' component={ProfessorProfile} allowedRoles={['professor']} />
+            <ProtectedRoute path='/getenrolledstudents' component={GetEnrolledStudents} allowedRoles={['professor']} />
           </Switch>
           <Footer />
       </Router>
