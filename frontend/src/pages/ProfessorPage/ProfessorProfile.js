@@ -3,13 +3,13 @@ import axios from 'axios';
 import { TextField, Button, Grid, IconButton} from '@mui/material';
 import Alert from '@mui/material/Alert';
 import CloseIcon from '@mui/icons-material/Close';
-import './StudentDashboard.css';
+import './ProfessorProfile.css';
 import image from './avatar.jpg';
 import {useAuth} from "../../context/AuthContext";
 
-const StudentDashboard = () => {
+const ProfessorProfile = () => {
   const { currentUser } = useAuth();
-  const [studentDetails, setStudentDetails] = useState({
+  const [professorDetails, setProfessorDetails] = useState({
     first_name: '',
     last_name: '',
     email: '',
@@ -18,39 +18,38 @@ const StudentDashboard = () => {
   });
   const [alert, setAlert] = useState({ show: false, message: '', type: '' });
 
-  const studentId = currentUser?.student_id;
+  const professorId = currentUser?.professor_id;
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
   useEffect(() => {
     const fetchProfileInformation = async () => {
       try {
         const response = await axios.get(
-            `${backendUrl}/api/student/profile/${studentId}`, {
+            `${backendUrl}/api/professor/profile/${professorId}`, {
               withCredentials: true,
               headers: {
                 'Content-Type': 'application/json',
                 "Access-Control-Allow-Origin": "*"
               }}
         );
-        setStudentDetails(response.data);
+        setProfessorDetails(response.data);
       } catch (error) {
-        // Handle the error
-        setAlert({ show: true, message: 'Failed to load student data', type: 'error' });
+        setAlert({ show: true, message: 'Failed to load professor data', type: 'error' });
       }
     };
 
     fetchProfileInformation();
-  }, [studentId, backendUrl]);
+  }, [professorId, backendUrl]);
   const handleInputChange = (e) => {
-    setStudentDetails({
-      ...studentDetails,
+    setProfessorDetails({
+      ...professorDetails,
       [e.target.name]: e.target.value
     });
   };
 
   const handleClear = () => {
-    setStudentDetails({
-      ...studentDetails,
+    setProfessorDetails({
+      ...professorDetails,
       bio: '',
       phone_number: '',
     });
@@ -58,10 +57,10 @@ const StudentDashboard = () => {
 
   const handleSave = async () => {
     try {
-      await axios.put(`${backendUrl}/api/student/profile/update/${studentId}`,
+      await axios.put(`${backendUrl}/api/professor/profile/update/${professorId}`,
           {
-            bio: studentDetails.bio,
-            phone_number: studentDetails.phone_number
+            bio: professorDetails.bio,
+            phone_number: professorDetails.phone_number
           },
           {
             withCredentials: true,
@@ -83,12 +82,12 @@ const StudentDashboard = () => {
   };
 
   return (
-      <div className="dashboard">
+      <div className="professor-dashboard">
         <div className="content">
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={12} md={3}>
               <img
-                  /* Image by <a href="https://www.freepik.com/free-psd/3d-illustration-human-avatar-profile_58509056.htm#query=happy%20avatar&position=21&from_view=keyword&track=ais&uuid=0f376cd8-810e-4240-9f4a-6e1911ef6ebe">Freepik</a> */
+                  /* Image by <a href="https://www.freepik.com/free-psd/3d-illustration-person-with-glasses_27470357.htm#fromView=search&page=3&position=52&uuid=203f7135-e817-456e-a9dc-79b530910992">Image by freepik</a> */
                   src={image}
                   alt="ProfilePicture"
                   style={{width: '100%', height: 'auto'}}
@@ -98,19 +97,19 @@ const StudentDashboard = () => {
               <h2>Personal Information</h2><br/>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <TextField label="First Name" name="first_name" value={studentDetails.first_name} fullWidth InputProps={{ readOnly: true }} />
+                  <TextField label="First Name" name="first_name" value={professorDetails.first_name} fullWidth InputProps={{ readOnly: true }} />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField label="Last Name" name="last_name" value={studentDetails.last_name} fullWidth InputProps={{ readOnly: true }} />
+                  <TextField label="Last Name" name="last_name" value={professorDetails.last_name} fullWidth InputProps={{ readOnly: true }} />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField label="Email" value={studentDetails.email} fullWidth InputProps={{ readOnly: true }} />
+                  <TextField label="Email" value={professorDetails.email} fullWidth InputProps={{ readOnly: true }} />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
                       label="Bio"
                       name="bio"
-                      value={studentDetails.bio}
+                      value={professorDetails.bio}
                       onChange={handleInputChange}
                       multiline
                       fullWidth
@@ -120,7 +119,7 @@ const StudentDashboard = () => {
                   <TextField
                       label="Phone Number"
                       name="phone_number"
-                      value={studentDetails.phone_number}
+                      value={professorDetails.phone_number}
                       onChange={handleInputChange}
                       fullWidth
                       onKeyPress={(event) => {
@@ -132,7 +131,7 @@ const StudentDashboard = () => {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <div className="buttonpanel">
+                  <div className="button-panel-2">
                     <Button variant="contained" style={{ backgroundColor: 'primary' }} onClick={handleSave}>
                       Save
                     </Button>
@@ -143,30 +142,30 @@ const StudentDashboard = () => {
                 </Grid>
               </Grid>
               <br/>
-              {alert.show && (
-                  <Alert
-                      variant="filled"
-                      severity={alert.type}
-                      action={
-                        <IconButton
-                            aria-label="close"
-                            color="inherit"
-                            size="small"
-                            onClick={handleCloseAlert}
-                        >
-                          <CloseIcon fontSize="inherit" />
-                        </IconButton>
-                      }
-                  >
-                    {alert.message}
-                  </Alert>
-              )}
             </Grid>
           </Grid>
+          {alert.show && (
+              <Alert
+                  variant="filled"
+                  severity={alert.type}
+                  action={
+                    <IconButton
+                        aria-label="close"
+                        color="inherit"
+                        size="small"
+                        onClick={handleCloseAlert}
+                    >
+                      <CloseIcon fontSize="inherit" />
+                    </IconButton>
+                  }
+              >
+                {alert.message}
+              </Alert>
+          )}
         </div>
       </div>
   );
 };
 
 
-export default StudentDashboard;
+export default ProfessorProfile;
