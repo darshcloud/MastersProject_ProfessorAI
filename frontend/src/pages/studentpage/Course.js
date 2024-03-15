@@ -11,6 +11,9 @@ const Course = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const { courseId } = useParams();
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
+  const streamlitURL = process.env.REACT_APP_STREAMLIT_URL;
+  const [showChat, setShowChat] = useState(false);
+  const chatAppURL = `${streamlitURL}?courseId=${courseId}`;
 
   useEffect(() => {
     const fetchCourseMaterials = async () => {
@@ -45,7 +48,7 @@ const Course = () => {
           <div className="welcome">
             <h2>Your selected course comes with the following list of course materials.</h2>
           </div>
-          {errorMessage &&  <Alert severity="error" variant="filled">{errorMessage}</Alert>}
+          {errorMessage && <Alert severity="error" variant="filled">{errorMessage}</Alert>}
           {!errorMessage && courseMaterials.length > 0 && (
               <div className="courses">
                 <div className="course">
@@ -63,6 +66,25 @@ const Course = () => {
                 </div>
               </div>
           )}
+
+          <div className="chat-home">
+            <button className="chat-icon" onClick={() => setShowChat(true)}>💬</button>
+            {showChat && (
+                <div className="chat-popup">
+                  <div className="chat-header">
+                    <h3>Chat with Us!</h3>
+                    <button onClick={() => setShowChat(false)} className="close-button">✖</button>
+                  </div>
+                  <iframe
+                      src={chatAppURL}
+                      height="540"
+                      width="1450"
+                      title="Chat"
+                  ></iframe>
+                </div>
+            )}
+          </div>
+
         </div>
       </div>
   );
