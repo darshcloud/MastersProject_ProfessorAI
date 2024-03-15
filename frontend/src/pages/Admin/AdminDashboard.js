@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Container, Typography, Grid, Paper } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-function AdminPage() {
+function AdminDashboard() {
   return (
     <Container maxWidth="lg" style={{ marginTop: '2rem',  height: '600px' }} >
       <Typography variant="h4" component="h1" gutterBottom>
@@ -75,4 +75,4 @@ function AdminPage() {
   );
 }
 
-export default AdminPage;
+export default AdminDashboard;
