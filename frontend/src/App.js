@@ -14,10 +14,10 @@ import { AuthProvider } from './context/AuthContext';
 import Professor from "./pages/ProfessorPage/Professor";
 import CourseDetails from "./pages/ProfessorPage/CourseDetails";
 import MaterialUpload from "./pages/ProfessorPage/MaterialUpload";
-import AdminSignIn from './pages/AdminSignIn/LoginPage';
-import AdminPage from './pages/AdminSignIn/AdminPage';
-import AddCoursePage from './pages/AdminSignIn/AddCoursePage';
-import Register from './pages/AdminSignIn/Register';
+import AdminLogin from './pages/Admin/LoginPage';
+import AdminDashboard from './pages/Admin/AdminDashboard';
+import AddCoursePage from './pages/Admin/AddCoursePage';
+import Register from './pages/Admin/Register';
 import ProfessorProfile from "./pages/ProfessorPage/ProfessorProfile";
 import GetEnrolledStudents from './pages/ProfessorPage/GetEnrolledStudents';
 function App() {
@@ -31,10 +31,10 @@ function App() {
             <Route path='/' exact component={Home} />
             <Route path='/About' component={About} />
             <Route path='/SignIn' component={SignIn} />
-            <Route path='/admin/login' component={AdminSignIn} />
             <Route path='/add-course' component={AddCoursePage} />
             <Route path='/register' component={Register} />
-            <Route path='/admin/dashboard' component={AdminPage} allowedRoles={['admin']} />
+            <Route path='/admin/login' component={AdminLogin} />
+            <ProtectedRoute path="/admin/dashboard" component={AdminDashboard} isAdminRoute={true} />
             <ProtectedRoute path='/student' component={Student} allowedRoles={['student']} />
             <ProtectedRoute path='/viewcourses/:courseId' component={Course} allowedRoles={['student']} />
             <ProtectedRoute path='/studenthome' component={Student} allowedRoles={['student']} />
