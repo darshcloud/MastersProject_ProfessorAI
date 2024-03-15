@@ -19,6 +19,7 @@ aws_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
 aws_bucket_name = os.getenv('AWS_BUCKET_NAME')
 s3_endpoint_url = os.getenv('AWS_S3_ENDPOINT_URL')
 aws_region = os.getenv('AWS_REGION')
+hf_token = os.getenv('HF_TOKEN')
 
 app = Flask(__name__)
 
@@ -26,17 +27,16 @@ embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-base-en-v1.5")
 chroma_client = chromadb.HttpClient()
 chroma_collection = chroma_client.get_or_create_collection("professorai")
 vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
-hf_token="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"
 
-#embed_model_2 = HuggingFaceInferenceAPIEmbedding(model_name="https://awkl07g0dfi0nnh1.us-east-1.aws.endpoints.huggingface.cloud", token=hf_token)
 
 pipeline = IngestionPipeline(
     transformations=[
-        SentenceSplitter(),
+        SentenceSplitter(chunk_size=500),
         embed_model,
     ],
     vector_store=vector_store,
 )
+
 
 @app.route('/sns', methods=['POST'])
 def sns():
@@ -75,11 +75,12 @@ def generate_embeddings(file_id, course_id):
         documents = loader.load_data()
 
         for document in documents:
+
             document.metadata["file_id"] = file_id
             document.metadata["course_id"] = course_id
 
         # Insert nodes into the index
-        pipeline.run(documents=documents)
+        pipeline.run(documents=documents, show_progress=True)
     except Exception as e:
         abort(500, f'Error obtaining file: {e}')
 
@@ -98,8 +99,8 @@ def handle_notification(message):
     sns_message = json.loads(message.get('Message'))
 
     # Extract the course_id and file_id from the message
-    course_id = sns_message.get('course_id')
     file_id = sns_message.get('file_id')
+    course_id = sns_message.get('course_id')
     action = sns_message.get('action')
 
     if action == 'delete':
@@ -107,6 +108,8 @@ def handle_notification(message):
     elif action == 'create':
         return generate_embeddings(file_id, course_id)
 
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5001)
+
 

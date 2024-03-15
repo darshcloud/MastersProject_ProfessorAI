@@ -13,7 +13,7 @@ const Course = () => {
   const backendUrl = process.env.REACT_APP_BACKEND_URL;
   const streamlitURL = process.env.REACT_APP_STREAMLIT_URL;
   const [showChat, setShowChat] = useState(false);
-  const chatAppURL = `${streamlitURL}?courseId=${courseId}`;
+  const chatAppURL = `${streamlitURL}?course_id=${courseId}&embed=True`;
 
   useEffect(() => {
     const fetchCourseMaterials = async () => {
