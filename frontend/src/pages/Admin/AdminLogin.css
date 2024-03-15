@@ -1,0 +1,89 @@
+.login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh; /* Use vh (viewport height) to make it fill the screen */
+  }
+  
+  .login-image, .login-form {
+    flex: 1; /* This makes both the image and form take up equal space */
+  }
+  
+  .login-image img {
+    width: 100%; /* Make image fill the container */
+    height: auto; /* Keep the image aspect ratio */
+  }
+  
+  /* Add some padding around the form */
+  .login-form {
+    padding: 20px;
+    max-width: 400px; /* Or whatever max width you prefer for the form */
+  }
+  
+  /* Your existing styles for #login-form and its children */
+  
+
+  #login-form {
+    width: 400px;
+    max-width: 100%;
+    margin: 50px auto;
+    background-color: lightblue;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    font-family: "Poppins", sans-serif;
+  }
+  
+  #login-form h1 {
+    text-align: center;
+    margin: 0;
+    padding: 20px 0;
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+  }
+  
+  #login-form form {
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    font-family: "Poppins", sans-serif;
+  }
+  
+  #login-form form label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: gray;
+    font-family: "Poppins", sans-serif;
+  }
+  
+  #login-form form input[type="text"],
+  #login-form form input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border: 0px solid lightgray;
+    border-radius: 5px;
+    font-size: 25px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+  }
+  
+  #login-form form input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: rgb(76, 197, 15);
+    border: none;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+  }
+  
+  #login-form form input[type="submit"]:hover {
+    background-color: #0ab2ea;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  }
+  
