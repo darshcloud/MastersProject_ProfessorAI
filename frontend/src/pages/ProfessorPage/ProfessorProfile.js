@@ -6,6 +6,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import './ProfessorProfile.css';
 import image from './avatar.jpg';
 import {useAuth} from "../../context/AuthContext";
+import {isValidPhoneNumber} from "libphonenumber-js";
 
 const ProfessorProfile = () => {
   const { currentUser } = useAuth();
@@ -55,7 +56,17 @@ const ProfessorProfile = () => {
     });
   };
 
-  const handleSave = async () => {
+  const isValidUSPhoneNumber = (phoneNumber) => {
+    if (!phoneNumber) {
+      return true;
+    }
+    if (phoneNumber.startsWith('+') && !phoneNumber.startsWith('+1')) {
+      return false;
+    }
+    return isValidPhoneNumber(phoneNumber, 'US');
+  };
+
+  const saveProfessorProfileDetails = async () => {
     try {
       await axios.put(`${backendUrl}/api/professor/profile/update/${professorId}`,
           {
@@ -74,6 +85,14 @@ const ProfessorProfile = () => {
       setAlert({ show: true, message: 'Profile updated successfully!', type: 'success' });
     } catch (error) {
       setAlert({ show: true, message: 'Error updating profile.', type: 'error' });
+    }
+  };
+
+  const handleSave = () => {
+    if (isValidUSPhoneNumber(professorDetails.phone_number)) {
+      saveProfessorProfileDetails();
+    } else {
+      setAlert({ show: true, message: 'Please enter a valid US phone number.', type: 'error' });
     }
   };
 
@@ -122,12 +141,6 @@ const ProfessorProfile = () => {
                       value={professorDetails.phone_number}
                       onChange={handleInputChange}
                       fullWidth
-                      onKeyPress={(event) => {
-                        // Allow only numeric input and limit to 10 digits
-                        if (!/[0-9]/.test(event.key) || event.target.value.length >= 10) {
-                          event.preventDefault();
-                        }
-                      }}
                   />
                 </Grid>
                 <Grid item xs={12}>
