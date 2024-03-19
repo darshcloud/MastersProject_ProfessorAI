@@ -54,9 +54,7 @@ code {
     gap: 10px;
 }
 
-
-
-.welcome h2 {
+.welcome {
     text-align: center;
     margin-bottom: 20px; /* Space below welcome message */
 }

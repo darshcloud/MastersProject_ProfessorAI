@@ -3,7 +3,7 @@ import './course.css';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Alert from '@mui/material/Alert';
-import {Button} from "@mui/material";
+import {Button, Typography} from "@mui/material";
 import ViewCourseMaterialStudent from "./ViewCourseMaterialStudent";
 
 
@@ -52,7 +52,7 @@ const Course = () => {
       <div className="coursehome">
         <div className="content">
           <div className="welcome">
-            <h2>Your selected course comes with the following list of course materials.</h2>
+            <Typography variant="h5">Your selected course comes with the following list of course materials.</Typography>
           </div>
           {errorMessage && <Alert severity="error" variant="filled">{errorMessage}</Alert>}
           {!errorMessage && courseMaterials.length > 0 && (

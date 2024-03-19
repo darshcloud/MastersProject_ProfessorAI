@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { TextField, Button, Grid, IconButton} from '@mui/material';
+import {TextField, Button, Grid, IconButton, Typography} from '@mui/material';
 import Alert from '@mui/material/Alert';
 import CloseIcon from '@mui/icons-material/Close';
 import './ProfessorProfile.css';
@@ -113,7 +113,7 @@ const ProfessorProfile = () => {
               />
             </Grid>
             <Grid item xs={12} md={9}>
-              <h2>Personal Information</h2><br/>
+              <Typography variant="h4">Personal Information</Typography><br/>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField label="First Name" name="first_name" value={professorDetails.first_name} fullWidth InputProps={{ readOnly: true }} />
