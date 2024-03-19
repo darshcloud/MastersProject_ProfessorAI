@@ -2,12 +2,10 @@
 
 let sequelizeInstance; // Sequelize instance
 
-// Setter function to set the Sequelize instance
 function setSequelize(sequelize) {
     sequelizeInstance = sequelize;
 }
 
-// List all materials for a specific course
 async function getCourseById(req, res) {
     const { courseId } = req.params;
     try {
