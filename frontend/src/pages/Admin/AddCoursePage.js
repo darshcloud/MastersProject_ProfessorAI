@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { TextField, Button, Typography, Container, Paper, Box } from '@mui/material';
-import axios from 'axios'; // Ensure axios is imported for API calls
+import axios from 'axios';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 
 function AddCoursePage() {
-  const [courseId, setCourseId] = useState('');
   const [courseCode, setCourseCode] = useState('');
   const [courseName, setCourseName] = useState('');
   const [courseDetails, setCourseDetails] = useState(null);
@@ -11,18 +11,17 @@ function AddCoursePage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setCourseDetails(null); // Reset course details on new submission
-    setSubmissionError(''); // Reset submission error on new submission
+    setCourseDetails(null); 
+    setSubmissionError(''); 
 
     const courseData = {
-      course_id: courseId,
       course_code: courseCode,
       course_name: courseName
     };
 
     try {
       const response = await axios.post('http://localhost:5000/api/admin/courses', courseData);
-      // Set the course details from the response data to display them
+      
       setCourseDetails(response.data);
     } catch (error) {
       console.error('There was an error adding the course:', error);
@@ -31,24 +30,13 @@ function AddCoursePage() {
   };
 
   return (
-    <Container component="main" maxWidth="sm">
-      <Paper elevation={6} style={{ padding: '20px', marginTop: '30px' }}>
-        <Typography component="h1" variant="h5">
+    <Container component="main" maxWidth="xs">
+      <Paper elevation={6} style={{ padding: '20px', marginTop: '100px', marginBottom: '100px' }}>
+      <Typography component="h1" variant="h5" style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
+          <MenuBookIcon color="primary" style={{ marginRight: '8px' }} />
           Add New Course
         </Typography>
         <form onSubmit={handleSubmit} style={{ marginTop: '20px' }}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="courseId"
-            label="Course ID"
-            name="courseId"
-            autoFocus
-            value={courseId}
-            onChange={(e) => setCourseId(e.target.value)}
-          />
           <TextField
             variant="outlined"
             margin="normal"
@@ -85,9 +73,8 @@ function AddCoursePage() {
             <Typography variant="h6" gutterBottom>
               Course Added Successfully!
             </Typography>
-            <Typography variant="body1">Course ID: {courseDetails.course.course_id}</Typography>
             <Typography variant="body1">Course Code: {courseDetails.course.course_code}</Typography>
-            <Typography variant="body1">Course Name: {courseDetails.course_name}</Typography>
+            <Typography variant="body1">Course Name: {courseDetails.course.course_name}</Typography>
           </Box>
         )}
       </Paper>
