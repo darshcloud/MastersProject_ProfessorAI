@@ -76,7 +76,7 @@ const AdminDashboard = () => {
       variant="contained"
       color="primary"
       component={Link}
-      to="/remove-course" 
+      to="/admin/removecourse" 
       sx={{ alignSelf: 'stretch' }} 
     >
       Remove 

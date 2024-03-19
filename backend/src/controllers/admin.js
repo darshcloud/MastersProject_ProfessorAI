@@ -81,6 +81,65 @@ async function addNewCourse(req, res) {
         res.status(500).json({ message: error.message });
     }
 }
+async function getAllCourses(req, res) {
+    try {
+        if (!sequelizeInstance) {
+            return res.status(500).json({ message: "Sequelize instance is not set." });
+        }
+        const Course = require('../models/Course')(sequelizeInstance);
+
+        const courses = await Course.findAll();
+
+        res.json({ message: "Courses fetched successfully", courses });
+    } catch (error) {
+        console.error("Error fetching courses:", error);
+        res.status(500).json({ message: error.message });
+    }
+}
+
+async function deleteCourse(req, res) {
+    try {
+        if (!sequelizeInstance) {
+            return res.status(500).json({ message: "Sequelize instance is not set." });
+        }
+
+        const { course_id } = req.params;
+
+        // Retrieve all materials for the course
+        const CourseMaterial = require('../models/course_material')(sequelizeInstance);
+        const materials = await CourseMaterial.findAll({ where: { course_id: course_id } });
+        for (const material of materials) {
+            const deleteParams = {
+                Bucket: process.env.S3_BUCKET_NAME,
+                Key: material.URI,
+            };
+            try {
+                await s3.deleteObject(deleteParams).promise();
+                console.log(`Successfully deleted material ${material.URI} from S3`);
+                await material.destroy();
+                console.log(`Successfully deleted material record for ${material.URI}`);
+            } catch (error) {
+                console.error(`Error deleting material ${material.URI}:`, error);
+            }
+        }
+
+        const Enrollment = require('../models/Enrollment')(sequelizeInstance);
+        await Enrollment.destroy({ where: { course_id: course_id } });
+
+        const Course = require('../models/Course')(sequelizeInstance);
+        const course = await Course.findByPk(course_id);
+        if (!course) {
+            return res.status(404).json({ message: "Course not found." });
+        }
+        await course.destroy();
+
+        res.json({ message: "Course and all associated materials and enrollments deleted successfully." });
+    } catch (error) {
+        console.error("Error deleting course and its associated data:", error);
+        res.status(500).json({ message: error.message });
+    }
+}
+
 
 async function enrollStudent(req, res) {
     try {
@@ -353,6 +412,8 @@ module.exports = {
     deleteProfessor,
     updateProfessor,
     addNewCourse,
+    getAllCourses,
+    deleteCourse,
     assignProfessor,
     adminLogin,
     requireAdmin
