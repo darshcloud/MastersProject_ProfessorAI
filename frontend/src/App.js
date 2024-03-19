@@ -31,8 +31,8 @@ function App() {
             <Route path='/' exact component={Home} />
             <Route path='/About' component={About} />
             <Route path='/SignIn' component={SignIn} />
-            <Route path='/add-course' component={AddCoursePage} />
-            <Route path='/register' component={Register} />
+            <Route path='/admin/addcourse' component={AddCoursePage} isAdminRoute={true} />
+            <ProtectedRoute path='/admin/register' component={Register} isAdminRoute={true} />
             <Route path='/admin/login' component={AdminLogin} />
             <ProtectedRoute path="/admin/dashboard" component={AdminDashboard} isAdminRoute={true} />
             <ProtectedRoute path='/student' component={Student} allowedRoles={['student']} />

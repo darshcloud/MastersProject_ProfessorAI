@@ -2,8 +2,13 @@ import React, { useState } from 'react';
 import { TextField, Button, Typography, Container, Paper, MenuItem ,Box} from '@mui/material';
 import axios from 'axios'; // Ensure axios is imported for API calls
 import Cookies from 'js-cookie';
+import SchoolIcon from '@mui/icons-material/School'; 
+import { makeStyles } from '@mui/styles';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions} from '@mui/material';
+
 
 function Register() {
+  const [openDialog, setOpenDialog] = useState(false);
   const [personId, setPersonId] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -13,16 +18,18 @@ function Register() {
   const [role, setRole] = useState('');
   const [registrationDetails, setRegistrationDetails] = useState(null);
   const [submissionError, setSubmissionError] = useState('');
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
+ 
 
   const handleSubmit = async (event) => {
 
     event.preventDefault();
-    setRegistrationDetails(null); // Reset registration details on new submission
-    setSubmissionError(''); // Reset submission error on new submission
+    setRegistrationDetails(null); 
+    setSubmissionError(''); 
 
-    const token = Cookies.get('token'); // Retrieve your token from the cookie
+    const token = Cookies.get('token'); 
     const headers = {
-      Authorization: `Bearer ${token}` // Prepare the authorization header
+      Authorization: `Bearer ${token}` 
     };
     const personData = {
         student_id: personId,
@@ -35,20 +42,23 @@ function Register() {
     };
 
     try {
-      const response = await axios.post(`http://localhost:5000/api/admin/register`, personData, { headers });
-      // Set the registration details from the response data to display them
+      const response = await axios.post(`${backendUrl}/api/admin/register`, personData, { headers });
       setRegistrationDetails(response.data);
+      setOpenDialog(true);
     } catch (error) {
       console.error(`There was an error adding the ${role}:`, error);
       setSubmissionError(`Error adding ${role}: ` + (error.response?.data?.message || error.message));
     }
   };
+   const handleClose = () => {
+    setOpenDialog(false);
+  };
 
   return (
-    <Container component="main" maxWidth="sm">
-      <Paper elevation={6} style={{ padding: '20px', marginTop: '30px' }}>
+    <Container component="main" maxWidth="xs">
+      <Paper elevation={6} style={{ padding: '20px', marginTop: '50px',marginBottom:'80px' }}>
         <Typography component="h1" variant="h5">
-          Register Professor/Student
+          <SchoolIcon style={{ marginRight: '10px' }} /> Register Professor/Student
         </Typography>
         <form onSubmit={handleSubmit} style={{ marginTop: '20px' }}>
           <TextField
@@ -64,17 +74,6 @@ function Register() {
             <MenuItem key="student" value="student">Student</MenuItem>
             <MenuItem key="professor" value="professor">Professor</MenuItem>
           </TextField>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="personId"
-            label={role === 'student' ? "Student ID" : "Professor ID"}
-            name="personId"
-            value={personId}
-            onChange={(e) => setPersonId(e.target.value)}
-          />
           <TextField
             variant="outlined"
             margin="normal"
@@ -112,23 +111,20 @@ function Register() {
           <TextField
             variant="outlined"
             margin="normal"
-            required
             fullWidth
             id="bio"
-            label="Bio"
+            label="Bio(Optional)"
             name="bio"
             multiline
-            rows={4}
             value={bio}
             onChange={(e) => setBio(e.target.value)}
           />
           <TextField
             variant="outlined"
             margin="normal"
-            required
             fullWidth
             id="phoneNum"
-            label="Phone Number"
+            label="Phone Number(Optional)"
             name="phoneNum"
             value={phoneNum}
             onChange={(e) => setPhoneNum(e.target.value)}

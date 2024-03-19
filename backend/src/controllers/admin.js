@@ -61,32 +61,26 @@ async function addNewCourse(req, res) {
         if (!sequelizeInstance) {
             return res.status(500).json({ message: "Sequelize instance is not set." });
         }
-
-        const { course_id, course_code, course_name } = req.body;
-
-
-        if (!course_id || !course_code || !course_name || !course_id.trim() || !course_code.trim() || !course_name.trim()) {
-            return res.status(400).json({ message: "All fields (course_id, course_code, course_name) are required and cannot be blank." });
+        const { course_code, course_name } = req.body;
+        if (!course_code || !course_name || !course_code.trim() || !course_name.trim()) {
+            return res.status(400).json({ message: "Both course_code and course_name are required and cannot be blank." });
         }
 
-        let Model, userAttributes;
+        const Model = require('../models/Course')(sequelizeInstance);
 
-        Model = require('../models/Course')(sequelizeInstance);
-        userAttributes = {
-            course_id,
+        const userAttributes = {
             course_code,
             course_name,
-            professor_id:  null, // Explicitly set to null 
+            professor_id:  null,
         };
 
         const newCourse = await Model.create(userAttributes);
 
-        res.json({ message: "New Course AddSuccessful!", course: newCourse });
+        res.json({ message: "New Course Added Successfully!", course: newCourse });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 }
-
 
 async function enrollStudent(req, res) {
     try {
