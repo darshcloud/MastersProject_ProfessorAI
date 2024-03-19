@@ -18,7 +18,8 @@ router.get('/professor/students/list/:course_id',isLoggedIn, professorCtrl.getEn
 router.get('/professor/students/search/:course_id',isLoggedIn, professorCtrl.searchStudents);
 router.get('/professor/:professor_id/courses', isLoggedIn, professorCtrl.getProfessorCourseDetails);
 router.post('/admin/register',adminCtrl.requireAdmin, adminCtrl.registerUser);
-router.post('/admin/courses', adminCtrl.addNewCourse)
+router.post('/admin/courses',adminCtrl.requireAdmin, adminCtrl.addNewCourse)
+router.get('/admin/getallcourses',adminCtrl.requireAdmin, adminCtrl.getAllCourses)
 router.delete('/admin/deletecourse/:course_id',adminCtrl.requireAdmin, adminCtrl.deleteCourse)
 router.put('/admin/course/:course_id/assignProfessor',adminCtrl.assignProfessor)
 router.post('/admin/student/enroll',adminCtrl.requireAdmin, adminCtrl.enrollStudent);

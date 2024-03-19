@@ -81,6 +81,22 @@ async function addNewCourse(req, res) {
         res.status(500).json({ message: error.message });
     }
 }
+async function getAllCourses(req, res) {
+    try {
+        if (!sequelizeInstance) {
+            return res.status(500).json({ message: "Sequelize instance is not set." });
+        }
+        const Course = require('../models/Course')(sequelizeInstance);
+
+        const courses = await Course.findAll();
+
+        res.json({ message: "Courses fetched successfully", courses });
+    } catch (error) {
+        console.error("Error fetching courses:", error);
+        res.status(500).json({ message: error.message });
+    }
+}
+
 async function deleteCourse(req, res) {
     try {
         if (!sequelizeInstance) {
@@ -396,6 +412,7 @@ module.exports = {
     deleteProfessor,
     updateProfessor,
     addNewCourse,
+    getAllCourses,
     deleteCourse,
     assignProfessor,
     adminLogin,
