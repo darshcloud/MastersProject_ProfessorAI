@@ -20,6 +20,7 @@ router.get('/professor/:professor_id/courses', isLoggedIn, professorCtrl.getProf
 router.post('/admin/register',adminCtrl.requireAdmin, adminCtrl.registerUser);
 router.post('/admin/courses',adminCtrl.requireAdmin, adminCtrl.addNewCourse)
 router.get('/admin/getallcourses',adminCtrl.requireAdmin, adminCtrl.getAllCourses)
+router.get('/admin/getAllProfessorsAndStudents',adminCtrl.requireAdmin, adminCtrl.getAllProfessorsAndStudents)
 router.delete('/admin/deletecourse/:course_id',adminCtrl.requireAdmin, adminCtrl.deleteCourse)
 router.put('/admin/course/:course_id/assignProfessor',adminCtrl.assignProfessor)
 router.post('/admin/student/enroll',adminCtrl.requireAdmin, adminCtrl.enrollStudent);

@@ -18,6 +18,7 @@ import AdminLogin from './pages/Admin/LoginPage';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import AddCoursePage from './pages/Admin/AddCoursePage';
 import Register from './pages/Admin/Register';
+import RemoveUser from './pages/Admin/RemovestudentsProfessors';
 import RemoveCourse from './pages/Admin/RemoveCourse';
 import ProfessorProfile from "./pages/ProfessorPage/ProfessorProfile";
 import GetEnrolledStudents from './pages/ProfessorPage/GetEnrolledStudents';
@@ -34,6 +35,7 @@ function App() {
             <Route path='/SignIn' component={SignIn} />
             <Route path='/admin/addcourse' component={AddCoursePage} isAdminRoute={true} />
             <ProtectedRoute path='/admin/register' component={Register} isAdminRoute={true} />
+            <ProtectedRoute path="/admin/removeuser" component={RemoveUser} isAdminRoute={true} />
             <Route path='/admin/login' component={AdminLogin} />
             <ProtectedRoute path="/admin/dashboard" component={AdminDashboard} isAdminRoute={true} />
             <ProtectedRoute path="/admin/removecourse" component={RemoveCourse} isAdminRoute={true} />
