@@ -147,17 +147,17 @@ const AdminDashboard = () => {
     }}
   >
     <Typography variant="h6" gutterBottom>
-      Assign Course
+      Enroll Student
     </Typography>
     <MenuBookIcon sx={{ fontSize: 40, color: '#d32f2f' }} /> {/* */}
     <Button
       variant="contained"
       color="error" 
       component={Link}
-      to="/remove-user" 
+      to="/admin/enrollstudent" 
       sx={{ alignSelf: 'stretch' }} 
     >
-      Assign 
+      Enroll 
     </Button>
   </Paper>
 </Grid>
