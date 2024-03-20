@@ -128,7 +128,7 @@ const AdminDashboard = () => {
       variant="contained"
       color="secondary" 
       component={Link}
-      to="/remove-user" 
+      to="/admin/removeuser" 
       sx={{ alignSelf: 'stretch' }} 
     >
       Remove 
@@ -162,7 +162,7 @@ const AdminDashboard = () => {
   </Paper>
 </Grid>
 
-        <Grid item xs={12} sm={6} md={4} lg={3}>
+<Grid item xs={12} sm={6} md={4} lg={3}>
   <Paper
     sx={{
       padding: '1rem',

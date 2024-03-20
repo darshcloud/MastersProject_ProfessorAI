@@ -344,6 +344,34 @@ async function deleteProfessor(req, res) {
 
 
 }
+async function getAllProfessorsAndStudents(req, res) {
+    try {
+        if (!sequelizeInstance) {
+            return res.status(500).json({ message: "Sequelize instance is not set." });
+        }
+        const ProfessorModel = require('../models/Professor')(sequelizeInstance);
+        const StudentModel = require('../models/Student')(sequelizeInstance);
+
+        const professors = await ProfessorModel.findAll({
+            attributes: ['professor_id', 'first_name', 'last_name', 'email', [sequelizeInstance.literal("'professor'"), 'role']]
+        });
+        const students = await StudentModel.findAll({
+            attributes: ['student_id', 'first_name', 'last_name', 'email', [sequelizeInstance.literal("'student'"), 'role']]
+        });
+
+        const combinedResults = [
+            ...professors.map(professor => ({...professor.get(), id: professor.professor_id})),
+            ...students.map(student => ({...student.get(), id: student.student_id}))
+        ];
+
+        res.json({ message: "Successfully fetched professors and students", users: combinedResults });
+    } catch (error) {
+        console.error("Error fetching professors and students:", error);
+        res.status(500).json({ message: error.message });
+    }
+}
+
+
 const jwt = require('jsonwebtoken');
  // Secret key for JWT (should be securely managed and not exposed)
 const jwtSecretKey = process.env.jwtSecretKey;
@@ -413,6 +441,7 @@ module.exports = {
     updateProfessor,
     addNewCourse,
     getAllCourses,
+    getAllProfessorsAndStudents,
     deleteCourse,
     assignProfessor,
     adminLogin,
