@@ -30,7 +30,7 @@ const FilePreview = ({ fileType, filePath }) => {
     };
 
     return (
-        <div style={{ height: '600px' }}> {/* Adjust the height as needed */}
+        <div style={{ height: '600px' }}>
             {renderFilePreview()}
         </div>
     );
