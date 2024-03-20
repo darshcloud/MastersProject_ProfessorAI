@@ -216,45 +216,41 @@ async function updateStudent(req, res) {
 
 async function assignProfessor(req, res) {
     try {
-        // Check if Sequelize instance is available
         if (!sequelizeInstance) {
             return res.status(500).json({ message: "Sequelize instance is not set." });
         }
 
-        // Get course_id from request parameters
         const { course_id } = req.params;
-        // Get course_id from request parameters
         const { professor_id } = req.body;
 
-        // Fetch the student with the provided course_id from the database
         const Course = require('../models/Course')(sequelizeInstance);
         let course = await Course.findByPk(course_id);
 
-        // Check if Course exists
         if (!course) {
-            return res.status(404).json({ message: "course not found." });
+            return res.status(404).json({ message: "Course not found." });
         }
 
-        // Fetch the student with the provided course_id from the database
+        // Check if the course is already assigned to a professor
+        if (course.professor_id !== null) {
+            return res.status(400).json({ message: "Course is already assigned to a professor." });
+        }
+
         const Professor = require('../models/Professor')(sequelizeInstance);
         let professor = await Professor.findByPk(professor_id);
 
-        // Check if professor exists
         if (!professor) {
-            return res.status(404).json({ message: "professor not found." });
+            return res.status(404).json({ message: "Professor not found." });
         }
 
-        course = await course.update({
-            professor_id,
-        });
+        // Proceed to assign the course to the professor since it's not already assigned
+        await course.update({ professor_id });
 
-        // Send success response with Assigned for course successfully
-        res.json({ message: "Professor Assigned for course successfully.", course });
+        res.json({ message: "Professor assigned to course successfully.", course });
     } catch (error) {
-        // If an error occurs, send an error response
         res.status(500).json({ message: error.message });
     }
 }
+
 async function updateProfessor(req, res) {
     try {
         // Check if Sequelize instance is available

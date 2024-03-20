@@ -17,11 +17,13 @@ import MaterialUpload from "./pages/ProfessorPage/MaterialUpload";
 import AdminLogin from './pages/Admin/LoginPage';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import AddCoursePage from './pages/Admin/AddCoursePage';
+import AssignCourseToProfessor from './pages/Admin/AssignCoursetoProfessor';
 import Register from './pages/Admin/Register';
 import RemoveUser from './pages/Admin/RemovestudentsProfessors';
 import RemoveCourse from './pages/Admin/RemoveCourse';
 import ProfessorProfile from "./pages/ProfessorPage/ProfessorProfile";
 import GetEnrolledStudents from './pages/ProfessorPage/GetEnrolledStudents';
+
 function App() {
   return (
     <AuthProvider>
@@ -39,6 +41,7 @@ function App() {
             <Route path='/admin/login' component={AdminLogin} />
             <ProtectedRoute path="/admin/dashboard" component={AdminDashboard} isAdminRoute={true} />
             <ProtectedRoute path="/admin/removecourse" component={RemoveCourse} isAdminRoute={true} />
+            <ProtectedRoute path="/admin/assigncourse" component={AssignCourseToProfessor} isAdminRoute={true} />
             <ProtectedRoute path='/student' component={Student} allowedRoles={['student']} />
             <ProtectedRoute path='/viewcourses/:courseId' component={Course} allowedRoles={['student']} />
             <ProtectedRoute path='/studenthome' component={Student} allowedRoles={['student']} />
