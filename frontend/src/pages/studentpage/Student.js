@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import './student.css';
 import axios from 'axios';
 import Alert from '@mui/material/Alert';
+import {Typography} from "@mui/material";
 
 const Student = () => {
   const { currentUser } = useAuth();
@@ -50,7 +51,8 @@ const Student = () => {
       <div className="home">
         <div className="content">
           <div className="welcome">
-            <h2>Welcome {studentName}!<br/> Exciting Learning Ahead! Here is your list of enrolled courses.</h2>
+            <Typography variant="h4">Welcome {studentName}!</Typography> <br/>
+            <Typography variant="h5">Exciting Learning Ahead! Here is your list of enrolled courses.</Typography>
           </div>
           {errorMessage &&  <Alert severity="error" variant="filled">{errorMessage}</Alert>}
           <div className="courses">

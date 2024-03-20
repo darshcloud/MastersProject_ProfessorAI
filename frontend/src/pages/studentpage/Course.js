@@ -3,7 +3,8 @@ import './course.css';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Alert from '@mui/material/Alert';
-import {Button} from "@mui/material";
+import {Button, Typography} from "@mui/material";
+import ViewCourseMaterialStudent from "./ViewCourseMaterialStudent";
 
 
 const Course = () => {
@@ -14,6 +15,7 @@ const Course = () => {
   const streamlitURL = process.env.REACT_APP_STREAMLIT_URL;
   const [showChat, setShowChat] = useState(false);
   const chatAppURL = `${streamlitURL}?course_id=${courseId}&embed=True`;
+  const [selectedMaterial, setSelectedMaterial] = useState(null);
 
   useEffect(() => {
     const fetchCourseMaterials = async () => {
@@ -42,14 +44,19 @@ const Course = () => {
     fetchCourseMaterials();
   }, [courseId, backendUrl]);
 
+  const handleViewMaterial = (materialId, materialName, courseId) => {
+    setSelectedMaterial({ materialId, materialName, courseId });
+  }
+
   return (
       <div className="coursehome">
         <div className="content">
           <div className="welcome">
-            <h2>Your selected course comes with the following list of course materials.</h2>
+            <Typography variant="h5">Your selected course comes with the following list of course materials.</Typography>
           </div>
           {errorMessage && <Alert severity="error" variant="filled">{errorMessage}</Alert>}
           {!errorMessage && courseMaterials.length > 0 && (
+              <div className="content">
               <div className="courses">
                 <div className="course">
                   <div className="material-list">
@@ -57,13 +64,21 @@ const Course = () => {
                     {courseMaterials.map((material, index) => (
                         <div key={index} className="material">
                           <span>{material.file_name}</span>
-                          <Button variant="contained" style={{backgroundColor: 'success'}}>
-                            View Material
+                          <Button onClick={() => handleViewMaterial(material.material_id, material.file_name, courseId)} variant="contained" style={{backgroundColor: 'primary'}}>
+                            Select File
                           </Button>
                         </div>
                     ))}
                   </div>
                 </div>
+              </div>
+                {selectedMaterial && (
+                    <ViewCourseMaterialStudent
+                        materialId={selectedMaterial.materialId}
+                        materialName={selectedMaterial.materialName}
+                        courseId={selectedMaterial.courseId}
+                    />
+                )}
               </div>
           )}
 

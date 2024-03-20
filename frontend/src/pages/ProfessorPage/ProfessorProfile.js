@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { TextField, Button, Grid, IconButton} from '@mui/material';
+import {TextField, Button, Grid, IconButton, Typography} from '@mui/material';
 import Alert from '@mui/material/Alert';
 import CloseIcon from '@mui/icons-material/Close';
 import './ProfessorProfile.css';
 import image from './avatar.jpg';
 import {useAuth} from "../../context/AuthContext";
+import {isValidPhoneNumber} from "libphonenumber-js";
 
 const ProfessorProfile = () => {
   const { currentUser } = useAuth();
@@ -55,7 +56,17 @@ const ProfessorProfile = () => {
     });
   };
 
-  const handleSave = async () => {
+  const isValidUSPhoneNumber = (phoneNumber) => {
+    if (!phoneNumber) {
+      return true;
+    }
+    if (phoneNumber.startsWith('+') && !phoneNumber.startsWith('+1')) {
+      return false;
+    }
+    return isValidPhoneNumber(phoneNumber, 'US');
+  };
+
+  const saveProfessorProfileDetails = async () => {
     try {
       await axios.put(`${backendUrl}/api/professor/profile/update/${professorId}`,
           {
@@ -77,6 +88,14 @@ const ProfessorProfile = () => {
     }
   };
 
+  const handleSave = () => {
+    if (isValidUSPhoneNumber(professorDetails.phone_number)) {
+      saveProfessorProfileDetails();
+    } else {
+      setAlert({ show: true, message: 'Please enter a valid US phone number.', type: 'error' });
+    }
+  };
+
   const handleCloseAlert = () => {
     setAlert({ ...alert, show: false });
   };
@@ -94,7 +113,7 @@ const ProfessorProfile = () => {
               />
             </Grid>
             <Grid item xs={12} md={9}>
-              <h2>Personal Information</h2><br/>
+              <Typography variant="h4">Personal Information</Typography><br/>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField label="First Name" name="first_name" value={professorDetails.first_name} fullWidth InputProps={{ readOnly: true }} />
@@ -122,12 +141,6 @@ const ProfessorProfile = () => {
                       value={professorDetails.phone_number}
                       onChange={handleInputChange}
                       fullWidth
-                      onKeyPress={(event) => {
-                        // Allow only numeric input and limit to 10 digits
-                        if (!/[0-9]/.test(event.key) || event.target.value.length >= 10) {
-                          event.preventDefault();
-                        }
-                      }}
                   />
                 </Grid>
                 <Grid item xs={12}>
