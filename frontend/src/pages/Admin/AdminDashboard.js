@@ -167,6 +167,7 @@ const AdminDashboard = () => {
     sx={{
       padding: '1rem',
       backgroundColor: '#c8e6c9',
+      display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
       gap: 2,
@@ -180,7 +181,7 @@ const AdminDashboard = () => {
       variant="contained"
       color="success"
       component={Link}
-      to="/admin/AssignProfessor" 
+      to="/admin/assigncourse" 
       sx={{ alignSelf: 'stretch' }} 
     >
       Assign 
