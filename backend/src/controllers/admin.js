@@ -139,6 +139,24 @@ async function deleteCourse(req, res) {
         res.status(500).json({ message: error.message });
     }
 }
+async function getAllStudents(req, res) {
+    try {
+        // Check if Sequelize instance is available
+        if (!sequelizeInstance) {
+            return res.status(500).json({ message: "Sequelize instance is not set." });
+        }
+
+        // Fetch all professors from the database
+        const Student = require('../models/Student')(sequelizeInstance); // Initialize Professor model with Sequelize instance
+        const students = await Student.findAll();
+
+        // Send the list of professors as a response
+        res.json(students);
+    } catch (error) {
+        // If an error occurs, send an error response
+        res.status(500).json({ message: error.message });
+    }
+}
 
 
 async function enrollStudent(req, res) {
@@ -430,6 +448,7 @@ const requireAdmin = (req, res, next) => {
 module.exports = {
     setSequelize,
     registerUser,
+    getAllStudents,
     enrollStudent,
     updateStudent,
     deleteStudent,

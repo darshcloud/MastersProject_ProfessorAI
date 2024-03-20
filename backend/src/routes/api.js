@@ -12,6 +12,7 @@ const { isLoggedIn } = require('../config/authMiddleware');
 
 // Define routes
 router.get('/professor',adminCtrl.requireAdmin, professorCtrl.getAllProfessors);
+router.get('/students',adminCtrl.requireAdmin, adminCtrl.getAllStudents);
 router.get('/professor/profile/:professor_id',isLoggedIn, professorCtrl.getProfessorProfileDetails);
 router.put('/professor/profile/update/:professor_id',isLoggedIn, professorCtrl.updateProfileInformation);
 router.get('/professor/students/list/:course_id',isLoggedIn, professorCtrl.getEnrolledStudentDetails);
