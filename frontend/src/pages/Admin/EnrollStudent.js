@@ -72,7 +72,7 @@ function EnrollStudent() {
   };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 6, mb: 18 }}>
+    <Container maxWidth="md" sx={{ mt: 6, mb: 18, marginBottom:'400px' }}>
       <Typography variant="h4" gutterBottom textAlign="center">
         Enroll Student in Course
       </Typography>

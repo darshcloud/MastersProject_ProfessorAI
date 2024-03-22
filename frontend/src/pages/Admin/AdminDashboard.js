@@ -20,7 +20,7 @@ const AdminDashboard = () => {
   };
 
   return (
-    <Container maxWidth="lg" style={{ marginTop: '2rem', paddingBottom: '4rem' }}>
+    <Container maxWidth="lg" style={{ marginTop: '2rem', paddingBottom: '4rem',  }}>
       <Typography variant="h4" component="h1" gutterBottom>
         Welcome, Admin!
       </Typography>

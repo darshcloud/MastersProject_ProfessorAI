@@ -93,7 +93,7 @@ function RemoveUser() {
 
   return (
     <Container maxWidth="lg" component="main">
-      <Paper elevation={6} style={{ padding: '20px', marginTop: '30px' }}>
+      <Paper elevation={6} style={{ padding: '20px', marginTop: '30px', marginBottom:'200px' }}>
         <Typography variant="h4" gutterBottom align="center">
           List of Professors and Students
         </Typography>

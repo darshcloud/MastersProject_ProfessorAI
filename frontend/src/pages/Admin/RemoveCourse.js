@@ -48,7 +48,7 @@ const CoursesList = () => {
   };
 
   return (
-    <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto', marginBottom: '20px' }}>
+    <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto', marginBottom: '500px' }}>
       <Typography variant="h4" gutterBottom>Courses List</Typography>
       <TableContainer component={Paper}>
         <Table>
