@@ -5,6 +5,7 @@ import './student.css';
 import axios from 'axios';
 import Alert from '@mui/material/Alert';
 import {Typography} from "@mui/material";
+import image from './courses.jpg';
 
 const Student = () => {
   const { currentUser } = useAuth();
@@ -66,6 +67,11 @@ const Student = () => {
                     {course.course_code}
                   </h3>
                   <p>Course Name: {course.course_name}</p>
+                  <img
+                      /* Image by <a href="https://www.freepik.com/free-vector/teaching-students-online-internet-learning-computer-programming-online-it-courses-best-online-it-training-online-certification-courses-concept_10780257.htm#fromView=search&page=1&position=16&uuid=f93a28e2-9005-4fe4-b2a5-73798b57d283">Image by vectorjuice on Freepik</a>*/
+                      src={image}
+                      alt="ProfilePicture"
+                      style={{width: '50%', height: 'auto'}}/>
                 </div>
             ))}
           </div>

@@ -4,6 +4,7 @@ import { styled } from '@mui/material/styles';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/styles';
@@ -37,6 +38,7 @@ const MaterialUpload = () => {
     const backendUrl = process.env.REACT_APP_BACKEND_URL;
     const [uploading, setUploading] = useState(false);
     const classes = useStyles();
+    const dropboxAppKey = process.env.REACT_APP_DROPBOX_APP_KEY;
 
     const VisuallyHiddenInput = styled('input')({
         clip: 'rect(0 0 0 0)',
@@ -49,6 +51,21 @@ const MaterialUpload = () => {
         whiteSpace: 'nowrap',
         width: 1,
     });
+
+    useEffect(() => {
+        const script = document.createElement('script');
+        script.src = "https://www.dropbox.com/static/api/2/dropins.js";
+        script.id = "dropboxjs";
+        script.setAttribute('data-app-key', dropboxAppKey);
+        script.onload = () => {
+            window.Dropbox.init({ app_key: dropboxAppKey });
+        };
+        document.head.appendChild(script);
+
+        return () => {
+            document.head.removeChild(script);
+        };
+    }, [dropboxAppKey]);
 
     useEffect(() => {
         const fetchCourseDetails = async () => {
@@ -68,6 +85,35 @@ const MaterialUpload = () => {
     // Function to handle file change
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
+    };
+
+    const handleDropboxFile = (files) => {
+        if (files && files.length > 0) {
+            const dbxFileUrl = files[0].link;
+            const fileName = files[0].name; // Extract the file name
+            fetchFileFromDropbox(dbxFileUrl, fileName);
+        }
+    };
+
+    const fetchFileFromDropbox = async (url, fileName) => {
+        try {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            const file = new File([blob], fileName, { type: blob.type });
+            setFile(file);
+        } catch (error) {
+            console.error('Error fetching file from Dropbox:', error);
+        }
+    };
+
+    const openDropboxChooser = () => {
+        window.Dropbox.choose({
+            success: handleDropboxFile,
+            cancel: () => console.log('Dropbox file selection was cancelled'),
+            linkType: 'direct',
+            multiselect: false,
+            extensions: ['.pdf', '.doc', '.docx', '.mp4', '.pptx', '.ppt', '.mpeg'], // Specify file extensions if needed
+        });
     };
 
     // Function to handle file upload
@@ -131,6 +177,9 @@ const MaterialUpload = () => {
             <br/>
             <Typography variant="h4" gutterBottom>
                 Course Name: {courseName}
+            </Typography> <br/>
+            <Typography variant="h6" gutterBottom>
+                Please Upload Course Materials using the below options
             </Typography>
             {error && <Alert variant="filled" severity="error" onClose={() => {setError("")}}>{error}</Alert>}
             {successMessage && <Alert variant="filled" severity="success" onClose={() => {setSuccessMessage("")}}>{successMessage}</Alert>}
@@ -143,10 +192,18 @@ const MaterialUpload = () => {
                             role={undefined}
                             variant="contained"
                             tabIndex={-1}
-                            startIcon={<CloudUploadIcon />}
+                            startIcon={<FileUploadIcon />}
                         >
-                            Select File
+                            Select File from Computer
                             <VisuallyHiddenInput type="file" onChange={handleFileChange} />
+                        </Button>
+                        <Typography variant="subtitle1" gutterBottom>OR</Typography>
+                        <Button
+                            variant="contained"
+                            startIcon={<CloudUploadIcon />}
+                            onClick={openDropboxChooser}
+                        >
+                            Select File from Dropbox
                         </Button>
                         {file && (
                             <Box className={classes.fileBox}>

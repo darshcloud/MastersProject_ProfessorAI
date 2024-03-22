@@ -5,6 +5,7 @@ import Alert from '@mui/material/Alert';
 import { useHistory } from 'react-router-dom';
 import { Button,Typography } from '@mui/material';
 import {useAuth} from "../../context/AuthContext";
+import image from './courses.jpg';
 
 const Professor = () => {
     const { currentUser } = useAuth();
@@ -70,13 +71,18 @@ const Professor = () => {
                         <div key={course.course_id} className="course" onClick={() => handleCourseClick(course.course_id)}>
                             <h3 style={{ backgroundColor: colors[index % colors.length] }}>{course.course_code}</h3>
                             <p>Course Name: {course.course_name}</p>
+                            <img
+                                /* Image by <a href="https://www.freepik.com/free-vector/script-writing-software-engineering-coding-workshop-code-created-workshop-online-programming-course-apps-games-development-class-concept_10782708.htm#query=software%20training&position=2&from_view=keyword&track=ais&uuid=6074dbd7-2949-45d7-a934-ef75150d591d">Image by vectorjuice on Freepik </a> */
+                                src={image}
+                                 alt="ProfilePicture"
+                                 style={{width: '50%', height: 'auto'}} />
                         </div>
                     ))}
                 </div>
             </div>
         </div>
     );
-    
+
 };
 
 export default Professor;
