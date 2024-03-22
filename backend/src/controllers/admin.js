@@ -306,13 +306,12 @@ async function updateProfessor(req, res) {
 
 async function deleteStudent(req, res) {
     try {
-  
         if (!sequelizeInstance) {
             return res.status(500).json({ message: "Sequelize instance is not set." });
         }
-
-   
         const { student_id } = req.params;
+        const Enrollment = require('../models/Enrollment')(sequelizeInstance);
+        await Enrollment.destroy({ where: { student_id: student_id } });
 
         const Student = require('../models/Student')(sequelizeInstance);
         const student = await Student.findByPk(student_id);
@@ -324,40 +323,35 @@ async function deleteStudent(req, res) {
 
         res.json({ message: "Student deleted successfully." });
     } catch (error) {
-
         res.status(500).json({ message: error.message });
     }
-
-
 }
 
 async function deleteProfessor(req, res) {
     try {
-  
         if (!sequelizeInstance) {
             return res.status(500).json({ message: "Sequelize instance is not set." });
         }
 
-   
         const { professor_id } = req.params;
 
         const Professor = require('../models/Professor')(sequelizeInstance);
+        const Course = require('../models/Course')(sequelizeInstance); 
         const professor = await Professor.findByPk(professor_id);
         console.log(professor)
 
         if (!professor) {
-            return res.status(404).json({ message: "Profesor not found." });
+            return res.status(404).json({ message: "Professor not found." });
         }
+        await Course.update({ professor_id: null }, { where: { professor_id: professor_id } });
         await professor.destroy();
 
-        res.json({ message: "Profesor deleted successfully." });
+        res.json({ message: "Professor deleted successfully." });
     } catch (error) {
-
         res.status(500).json({ message: error.message });
     }
-
-
 }
+
 async function getAllProfessorsAndStudents(req, res) {
     try {
         if (!sequelizeInstance) {
