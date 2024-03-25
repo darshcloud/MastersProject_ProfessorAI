@@ -65,6 +65,15 @@ async function addNewCourse(req, res) {
         if (!course_code || !course_name || !course_code.trim() || !course_name.trim()) {
             return res.status(400).json({ message: "Both course_code and course_name are required and cannot be blank." });
         }
+        // Check if the Course code or Course name already exists
+        const CourseModel = require('../models/Course')(sequelizeInstance);
+
+        const existingCourseCode = await CourseModel.findOne({ where: { course_code: course_code } });
+        const existingCourseName = await CourseModel.findOne({ where: { course_name: course_name } });
+
+        if (existingCourseCode || existingCourseName) {
+            return res.status(400).json({ message: "Course Code or Course Name Already Exist. Please use a Different Course Code or Name." });
+        }
 
         const Model = require('../models/Course')(sequelizeInstance);
 
