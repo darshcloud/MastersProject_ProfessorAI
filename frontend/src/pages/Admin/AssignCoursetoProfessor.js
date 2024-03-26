@@ -87,7 +87,7 @@ function AssignCourseToProfessor() {
     
     return (
 <Container component="main" maxWidth="sm">
-  <Paper elevation={6} style={{ padding: '20px', marginTop: '100px', marginBottom: '100px' }}>
+  <Paper elevation={6} style={{ padding: '20px', marginTop: '100px', marginBottom: '500px' }}>
     <Typography component="h1" variant="h5" style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
       <MenuBookIcon color="primary" style={{ marginRight: '8px' }} />
       Assign Course to Professor
@@ -127,6 +127,7 @@ function AssignCourseToProfessor() {
       </FormControl>
       <Button
         variant="contained"
+        margin="normal"
         color="primary"
         onClick={assignCourse}
         fullWidth

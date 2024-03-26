@@ -24,6 +24,7 @@ import RemoveUser from './pages/Admin/RemovestudentsProfessors';
 import RemoveCourse from './pages/Admin/RemoveCourse';
 import ProfessorProfile from "./pages/ProfessorPage/ProfessorProfile";
 import GetEnrolledStudents from './pages/ProfessorPage/GetEnrolledStudents';
+import AskMeAnything from './pages/Admin/AskmeAnything';
 
 function App() {
   return (
@@ -36,7 +37,8 @@ function App() {
             <Route path='/' exact component={Home} />
             <Route path='/About' component={About} />
             <Route path='/SignIn' component={SignIn} />
-            <Route path='/admin/addcourse' component={AddCoursePage} isAdminRoute={true} />
+            <ProtectedRoute path='/admin/askme' component={AskMeAnything}  isAdminRoute={true}/>
+            <ProtectedRoute path='/admin/addcourse' component={AddCoursePage} isAdminRoute={true} />
             <ProtectedRoute path='/admin/register' component={Register} isAdminRoute={true} />
             <ProtectedRoute path="/admin/removeuser" component={RemoveUser} isAdminRoute={true} />
             <Route path='/admin/login' component={AdminLogin} />
