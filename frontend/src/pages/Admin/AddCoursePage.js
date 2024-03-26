@@ -39,7 +39,7 @@ function AddCoursePage() {
 
   return (
     <Container component="main" maxWidth="xs">
-      <Paper elevation={6} style={{ padding: '20px', marginTop: '100px', marginBottom: '100px' }}>
+      <Paper elevation={6} style={{ padding: '20px', marginTop: '100px', marginBottom: '400px' }}>
         <Typography component="h1" variant="h5" style={{ display: 'flex', alignItems: 'center', marginBottom: '1rem' }}>
           <MenuBookIcon color="primary" style={{ marginRight: '8px' }} />
           Add New Course
