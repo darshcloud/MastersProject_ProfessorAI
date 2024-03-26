@@ -114,28 +114,27 @@ async function deleteCourse(req, res) {
         const { course_id } = req.params;
         const CourseMaterial = require('../models/course_material')(sequelizeInstance);
         const materials = await CourseMaterial.findAll({ where: { course_id: course_id } });
-        for (const material of materials) {
-            const deleteParams = {
-                Bucket: process.env.S3_BUCKET_NAME,
-                Key: material.URI,
-            };
-            try {
-                await s3.deleteObject(deleteParams).promise();
-                console.log(`Successfully deleted material ${material.URI} from S3`);
-                await material.destroy();
-                console.log(`Successfully deleted material record for ${material.URI}`);
-            } catch (error) {
-                console.error(`Error deleting material ${material.URI}:`, error);
-            }
+
+        // If there are any course materials, instruct the user to delete them first
+        if (materials.length > 0) {
+            return res.status(400).json({ message: "Course material exists. Please delete all associated course materials before deleting the course." });
         }
-        const Enrollment = require('../models/Enrollment')(sequelizeInstance);
-        await Enrollment.destroy({ where: { course_id: course_id } });
 
         const Course = require('../models/Course')(sequelizeInstance);
         const course = await Course.findByPk(course_id);
         if (!course) {
             return res.status(404).json({ message: "Course not found." });
         }
+
+        // If the course has no materials, proceed to unassign it from the professor
+        // This assumes that the `professor_id` can be set to `null` to indicate no assignment
+        await Course.update({ professor_id: null }, { where: { course_id: course_id } });
+
+        // Delete any enrollments associated with the course
+        const Enrollment = require('../models/Enrollment')(sequelizeInstance);
+        await Enrollment.destroy({ where: { course_id: course_id } });
+
+        // Finally, delete the course itself
         await course.destroy();
 
         res.json({ message: "Course and all associated materials and enrollments deleted successfully." });
@@ -144,6 +143,7 @@ async function deleteCourse(req, res) {
         res.status(500).json({ message: error.message });
     }
 }
+
 async function getAllStudents(req, res) {
     try {
         // Check if Sequelize instance is available
