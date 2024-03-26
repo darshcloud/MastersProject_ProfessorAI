@@ -111,10 +111,7 @@ async function deleteCourse(req, res) {
         if (!sequelizeInstance) {
             return res.status(500).json({ message: "Sequelize instance is not set." });
         }
-
         const { course_id } = req.params;
-
-        // Retrieve all materials for the course
         const CourseMaterial = require('../models/course_material')(sequelizeInstance);
         const materials = await CourseMaterial.findAll({ where: { course_id: course_id } });
         for (const material of materials) {
@@ -131,7 +128,6 @@ async function deleteCourse(req, res) {
                 console.error(`Error deleting material ${material.URI}:`, error);
             }
         }
-
         const Enrollment = require('../models/Enrollment')(sequelizeInstance);
         await Enrollment.destroy({ where: { course_id: course_id } });
 
@@ -406,7 +402,7 @@ async function adminLogin(req, res) {
         try {
             // Generate JWT token for the admin
             const token = jwt.sign(
-                { userId: "admin", email: adminEmail },
+                {sub: adminEmail, userId: "admin", email: adminEmail },
                 jwtSecretKey,
                 { expiresIn: "1h" }
             );

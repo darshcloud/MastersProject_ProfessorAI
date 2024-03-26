@@ -9,7 +9,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 import SchoolIcon from '@mui/icons-material/School';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 const AdminDashboard = () => {
   const { adminLogout } = useAuth();
   const history = useHistory(); 
@@ -68,6 +68,7 @@ const AdminDashboard = () => {
       gap: 2, 
     }}
   >
+    
     <Typography variant="h6" gutterBottom>
       Remove Course
     </Typography>
@@ -135,6 +136,7 @@ const AdminDashboard = () => {
     </Button>
   </Paper>
 </Grid>
+
 <Grid item xs={12} sm={6} md={4} lg={3}>
   <Paper
     sx={{
@@ -161,7 +163,6 @@ const AdminDashboard = () => {
     </Button>
   </Paper>
 </Grid>
-
 <Grid item xs={12} sm={6} md={4} lg={3}>
   <Paper
     sx={{
@@ -185,6 +186,32 @@ const AdminDashboard = () => {
       sx={{ alignSelf: 'stretch' }} 
     >
       Assign 
+    </Button>
+  </Paper>
+</Grid>
+<Grid item xs={12} sm={6} md={4} lg={3}>
+  <Paper
+    sx={{
+      padding: '1rem',
+      backgroundColor: '#bbdefb', // Choose a background color that fits your theme
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: 2,
+    }}
+  >
+    <Typography variant="h6" gutterBottom>
+      Ask Me Anything
+    </Typography>
+    <HelpOutlineIcon sx={{ fontSize: 40, color: '#2196f3' }} /> {/* Choose an appropriate color */}
+    <Button
+      variant="contained"
+      color="primary"
+      component={Link}
+      to="/admin/askme" 
+      sx={{ alignSelf: 'stretch' }}
+    >
+      Ask
     </Button>
   </Paper>
 </Grid>
