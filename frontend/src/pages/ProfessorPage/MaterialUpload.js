@@ -194,7 +194,7 @@ const MaterialUpload = () => {
                             tabIndex={-1}
                             startIcon={<FileUploadIcon />}
                         >
-                            Select File from Computer
+                            Select File from Device
                             <VisuallyHiddenInput type="file" onChange={handleFileChange} />
                         </Button>
                         <Typography variant="subtitle1" gutterBottom>OR</Typography>
