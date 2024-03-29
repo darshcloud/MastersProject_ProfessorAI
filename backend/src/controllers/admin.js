@@ -189,6 +189,11 @@ async function enrollStudent(req, res) {
         }
 
         const Enrollment = require('../models/Enrollment')(sequelizeInstance);
+        const countEnrollments = await Enrollment.count({ where: { student_id: student_id } });
+        if (countEnrollments >= 3) {
+            return res.status(400).json({ message: "The student cannot be enrolled in more than 3 courses." });
+        }
+
         const existingEnrollment = await Enrollment.findOne({ where: { student_id, course_id } });
 
         if (existingEnrollment) {
@@ -202,6 +207,7 @@ async function enrollStudent(req, res) {
         res.status(500).json({ message: error.message });
     }
 }
+
 async function updateStudent(req, res) {
     try {
         // Check if Sequelize instance is available
