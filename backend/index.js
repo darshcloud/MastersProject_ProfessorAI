@@ -79,7 +79,33 @@ app.get("/logout", (req, res) => {
         });
     });
 });
-
+app.get('/', (req, res) => {
+    res.send(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Server Status</title>
+            <style>
+                body { 
+                    font-family: Arial, sans-serif; 
+                    margin: 40px; 
+                    background-color: #f0f0f0; 
+                    text-align: center; 
+                    color: #333;
+                }
+                h1 { color: #0366d6; }
+                p { font-size: 20px; }
+            </style>
+        </head>
+        <body>
+            <h1>Vola! The server is running.</h1>
+            <p>Backend API server is now up and operational. Ready to handle requests!</p>
+        </body>
+        </html>
+    `);
+});
 
 
 // Load environment variables from .env file
