@@ -26,6 +26,7 @@ module.exports = (sequelize) => {
             },
         }
     },  {
+        tableName: 'enrollments',
         timestamps: false,
         indexes: [{
             unique: true,

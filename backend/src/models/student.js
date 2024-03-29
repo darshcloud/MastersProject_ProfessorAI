@@ -34,6 +34,7 @@ module.exports = (sequelize) => {
             allowNull: false
         }
     }, {
+        tableName:'students',
         timestamps: false // Disable timestamps
     });
 
