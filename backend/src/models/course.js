@@ -26,6 +26,7 @@ module.exports = (sequelize) => {
             }
         },
     },{
+        tableName: 'courses',
         timestamps: false // Disable timestamps if you're handling them manually
     });
 
