@@ -1,10 +1,25 @@
-# ProfessorAI
-**Team Code Wizards** <br/>
-**Team Members** <br/>
-Bhavya Hegde - 016656029<br/>
-Blessy Dickson Daniel Moses - 016697460<br/>
-Darshini Venkatesha Murthy Nag - 016668951<br/>
-Sirisha Polisetty - 016012477<br/>
+ 
+<b>Course Name :</b> CMPE-295B - Master Project II
+
+<b>Project Name  :</b> ProfessorAI
+
+<b>Application URL :</b> https://professorai.tech
+
+<b>University Name :</b> [San Jose State University](https://www.sjsu.edu/)
+
+<b>Professor's Name :</b> [Andrew Bond](https://www.linkedin.com/in/ahbond/)
+
+<b>Team Name:</b> Team Code Wizards
+
+<b>Team Members:</b> <br/>
+
+- [Bhavya Hegde](www.linkedin.com/in/bhavya-hegde-145b9b123)
+- [Blessy Dickson Daniel Moses](https://www.linkedin.com/in/blessy-dickson-348a31133/)
+- [Darshini Venkatesha Murthy Nag](https://www.linkedin.com/in/darshini-venkatesha-murthy-nag-90052756/)
+- [Sirisha Polisetty](https://www.linkedin.com/in/sirishapolisetty/)
+
+## Introduction
+
 
 ## Technologies and tools used
 
