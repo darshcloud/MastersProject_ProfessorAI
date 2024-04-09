@@ -30,12 +30,23 @@ The proposed solution involves leveraging Large Language Models (LLMs) through t
 ## Application Features
 
 ### Professor Features
+* Professors can login into the application using google SSO credentials.
 * Professor flow functionality includes a dashboard, where professors can view the list of courses they teach.
 * View list of enrolled students for each course they teach.
 * Upload course materials either from device or by using dropbox.
-* View the uploaded course material using the file viewer. 
+* Embedding Generation for the uploaded course materials.
+* View the uploaded course material using the file viewer.
+* Update Bio and Phone Number in the personal information.
+
+### Student Features
+* Students can login into the application using google SSO credentials.
+* Student flow functionality includes a dashboard, where students can view their list of enrolled courses.
+* View the professor uploaded course material using the file viewer.
+* Ask questions and receive response related to course material using the conversational chat interface.
+* Update Bio and Phone Number in the personal information.
 
 ### Admin Features
+* Admins can login into the application using token-based authentication.
 * Admins functionality includes to add a course by providing course details and to remove a course.
 * To register student and professor to the platform, and to remove users.
 * To enroll a student to courses.
