@@ -13,7 +13,7 @@
 
 <b>Team Members:</b> <br/>
 
-- [Bhavya Hegde](www.linkedin.com/in/bhavya-hegde-145b9b123)
+- [Bhavya Hegde](https://www.linkedin.com/in/bhavya-hegde/)
 - [Blessy Dickson Daniel Moses](https://www.linkedin.com/in/blessy-dickson-348a31133/)
 - [Darshini Venkatesha Murthy Nag](https://www.linkedin.com/in/darshini-venkatesha-murthy-nag-90052756/)
 - [Sirisha Polisetty](https://www.linkedin.com/in/sirishapolisetty/)
