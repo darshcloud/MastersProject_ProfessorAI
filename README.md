@@ -9,7 +9,7 @@
 
 <b>Professor's Name :</b> [Andrew Bond](https://www.linkedin.com/in/ahbond/)
 
-<b>Team Name:</b> Team Code Wizards
+<b>Team Name :</b> Code Wizards
 
 <b>Team Members:</b> <br/>
 
@@ -28,12 +28,20 @@ Professors face the challenge of effectively delivering a comprehensive curricul
 The proposed solution involves leveraging Large Language Models (LLMs) through the ProfessorAI platform to enhance educational experiences. This method allows professors to upload their course content onto the platform. The LLM then processes, learns, and organizes this data efficiently. Students benefit by engaging with a chat application that gives them access to any information related to their coursework. This system is not limited to mere summarization; it also encourages deeper exploration of subjects, aided by additional resources like books recommended by professors. This approach fundamentally transforms and enriches the student learning journey by providing a more dynamic, interactive, and comprehensive educational tool.
 
 ## Application Features
+
+### Professor Features
+* Professor flow functionality includes a dashboard, where professors can view the list of courses they teach.
+* View list of enrolled students for each course they teach.
+* Upload course materials either from device or by using dropbox.
+* View the uploaded course material using the file viewer. 
+
 ### Admin Features
 * Admins functionality includes to add a course by providing course details and to remove a course.
 * To register student and professor to the platform, and to remove users.
 * To enroll a student to courses.
 * To assign a professor to course.
-* To submit administrative inquries using the admin query interface. 
+* To submit administrative inquries using the admin query interface.
+
   
 
 ## Technologies and Tools used
