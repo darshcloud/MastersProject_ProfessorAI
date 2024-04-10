@@ -60,6 +60,8 @@ The proposed solution involves leveraging Large Language Models (LLMs) through t
 Frontend : ReactJS, Material UI </br>
 Backend : NodeJS, Flask </br>
 Database : MySQL, ChromaDB(Embedding DB) </br>
+LLM: Mistral 7B </br>
+Embedding model: bge-en-large </br>
 Tools used : Visual Studio code/Any IDE </br>
 AWS components : EC2, Route 53, RDS, SNS, S3, CloudFront </br>
 GCP components : VertexAI, Google Compute Engine, Google Managed Certificate, Load Balancer </br>
@@ -68,3 +70,8 @@ External APIs : Google's Gemini API, Google Auth API, Dropbox API </br>
 ## Architecture Diagram
 
 <img width="482" alt="image" src="https://github.com/dblessy/ProfessorAI/assets/85700971/d00577f0-4ef6-4cec-b000-8f8ba0e0cf79">
+
+## Application screenshots
+
+
+
