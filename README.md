@@ -73,29 +73,32 @@ External APIs : Google's Gemini API, Google Auth API, Dropbox API </br>
 
 
 ## Application Screenshots
-#### Home page
+#### Home Page
 ![scr1](images/Landing%20page.png)
 
-#### Professor dashboard
+#### Login Page
+![image](https://github.com/dblessy/ProfessorAI/assets/111547793/8c4f52e2-3b35-4da5-82b2-da18e4f14b3a)
+
+#### Professor Dashboard
 ![scr2](images/professor%20dashboard.png)
 
-#### Professor course page
+#### Professor Course Page
 ![scr3](images/professor-materials.png)
 
-#### Professor profile page
+#### Professor Profile Page
 ![scr4](images/professor-profile.png)
 
-#### Student dashboard 
+#### Student Dashboard 
 ![scr5](images/Student%20dashboard.png)
 
-#### Student chat 
+#### Student Chat 
 ![scr6](images/chat1.png)
 
 ![scr7](images/chat2.png)
 
-#### Admin dashboard
+#### Admin Dashboard
 ![scr8](images/admin%20dashboard.png)
 
-#### Admin query interface
+#### Admin Query Interface
 ![scr9](images/admin-query.png)
 
