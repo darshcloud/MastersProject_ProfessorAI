@@ -71,7 +71,8 @@ External APIs : Google's Gemini API, Google Auth API, Dropbox API </br>
 
 <img width="482" alt="image" src="https://github.com/dblessy/ProfessorAI/assets/85700971/d00577f0-4ef6-4cec-b000-8f8ba0e0cf79">
 
-## Application screenshots
+
+## Application Screenshots
 #### Home page
 ![scr1](images/Landing page.png)
 
