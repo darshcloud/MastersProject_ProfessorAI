@@ -74,7 +74,7 @@ External APIs : Google's Gemini API, Google Auth API, Dropbox API </br>
 
 ## Application Screenshots
 #### Home page
-![scr1](images/Landing page.png)
+![scr1](images/Landing%20page.png)
 
 #### Professor dashboard
 ![scr2](images/professor%20dashboard.png)
