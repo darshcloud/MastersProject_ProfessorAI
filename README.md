@@ -1,7 +1,8 @@
  
 <b>Course Name :</b> CMPE-295B - Master Project II
 
-<b>Project Name  :</b> ProfessorAI
+<b>Project Name  :</b> ProfessorAI - An Enhanced AI-Powered Interactive Educational Platform for Comprehensive Learning
+
 
 <b>Application URL :</b> https://professorai.tech
 
